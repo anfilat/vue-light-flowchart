@@ -3,8 +3,8 @@
     @mouseleave="handleMouseLeave">
     <path :d="dAttr" :style="pathStyle"></path>
     <a v-if="show.delete" @click="deleteLink">
-      <text 
-        text-anchor="middle" 
+      <text
+        text-anchor="middle"
         :transform="arrowTransform"
         font-size="22">&times;</text>
     </a>
@@ -32,6 +32,7 @@ export default {
         return [0, 0]
       }
     },
+    scale: Number,
     id: Number,
   },
   data() {
@@ -70,7 +71,7 @@ export default {
     pathStyle() {
       return {
         stroke: 'rgb(255, 136, 85)',
-        strokeWidth: 2.73205,
+        strokeWidth: 2.73205 * this.scale,
         fill: 'none',
       }
     },
@@ -84,7 +85,7 @@ export default {
     arrowTransform() {
       const [arrowX, arrowY] = this.caculateCenterPoint();
       const degree = this.caculateRotation()
-      return `translate(${arrowX}, ${arrowY}) rotate(${degree})`;
+      return `translate(${arrowX}, ${arrowY}) rotate(${degree}) scale(${this.scale})`;
     },
     dAttr() {
       let cx = this.start[0], cy = this.start[1], ex = this.end[0], ey = this.end[1];
