@@ -10,7 +10,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest demo",
     "lint": "vue-cli-service lint",
-    "build:bundle": "vue-cli-service build --target lib --name vue-flowchart ./src/index.js"
+    "build:bundle": "vue-cli-service build --target lib --name vue-flowchart ./src/index.js",
+    "deploy": "gh-pages -d demo"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,6 +21,7 @@
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
     "@vue/cli-service": "^3.0.0",
+    "gh-pages": "^2.1.1",
     "node-sass": "^4.9.3",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.11"
