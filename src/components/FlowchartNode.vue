@@ -54,9 +54,16 @@ export default {
       default() {
         return {
           centerX: 1024,
-          scale: 1,
           centerY: 140,
+          scale: 1,
+          selected: false,
           orientation: 'vert',
+          width: 80,
+          height: 80,
+          themeColor: '',
+          nodeBgColor: '',
+          typeColor: '',
+          labelColor: '',
         }
       }
     }
@@ -74,6 +81,12 @@ export default {
         top: this.options.centerY + this.y * this.options.scale + 'px',
         left: this.options.centerX + this.x * this.options.scale + 'px',
         transform: `scale(${this.options.scale})`,
+        width: this.options.width + 'px',
+        height: this.options.height + 'px',
+        '--theme-color': this.options.themeColor,
+        '--node-bgcolor': this.options.nodeBgColor,
+        '--type-color': this.options.typeColor,
+        '--label-color': this.options.labelColor,
       }
     }
   },
@@ -105,17 +118,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-$themeColor: rgb(255, 136, 85);
 $portSize: 12;
 
 .flowchart-node {
   margin: 0;
-  width: 80px;
-  height: 80px;
   position: absolute;
   box-sizing: border-box;
   border: none;
-  background: white;
+  background: var(--node-bgcolor);
+  color: var(--label-color);
   z-index: 1;
   opacity: .9;
   cursor: move;
@@ -125,8 +136,8 @@ $portSize: 12;
     text-align: center;
 
     .node-type {
-      background: $themeColor;
-      color: white;
+      background: var(--theme-color);
+      color: var(--type-color);
       font-size: 13px;
       padding: 6px;
     }
@@ -142,11 +153,11 @@ $portSize: 12;
     height: #{$portSize}px;
     border: 1px solid #ccc;
     border-radius: 50%;
-    background: white;
+    background: var(--node-bgcolor);
 
     &:hover {
-      background: $themeColor;
-      border: 1px solid $themeColor;
+      background: var(--theme-color);
+      border: 1px solid var(--theme-color);
     }
   }
 
@@ -187,21 +198,21 @@ $portSize: 12;
     font-size: 12px;
     width: 12px;
     height: 12px;
-    color: $themeColor;
+    color: var(--theme-color);
     cursor: pointer;
-    background: white;
-    border: 1px solid $themeColor;
+    background: var(--node-bgcolor);
+    border: 1px solid var(--theme-color);
     border-radius: 100px;
     text-align: center;
 
     &:hover{
-      background: $themeColor;
+      background: var(--theme-color);
       color: white;
     }
   }
 }
 
 .selected {
-  box-shadow: 0 0 0 2px $themeColor;
+  box-shadow: 0 0 0 2px var(--theme-color);
 }
 </style>

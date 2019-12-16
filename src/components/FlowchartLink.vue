@@ -1,14 +1,20 @@
 <template>
-  <g @mouseover="handleMouseOver"
+  <g
+    @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave">
     <path :d="dAttr" :style="pathStyle"></path>
-    <a v-if="show.delete" @click="deleteLink">
+    <a
+      v-if="show.delete"
+      @click="deleteLink">
       <text
         text-anchor="middle"
-        :transform="arrowTransform"
-        font-size="22">&times;</text>
+        :style="deleteStyle"
+        :transform="arrowTransform">
+        &times;
+      </text>
     </a>
-    <path v-else d="M -1 -1 L 0 1 L 1 -1 z"
+    <path v-else
+      d="M -1 -1 L 0 1 L 1 -1 z"
       :style="arrowStyle"
       :transform="arrowTransform"></path>
   </g>
@@ -32,8 +38,18 @@ export default {
         return [0, 0]
       }
     },
-    scale: Number,
     id: Number,
+    options: {
+      type: Object,
+      default() {
+        return {
+          scale: 1,
+          themeColor: '',
+          labelColor: '',
+          linkWidth: 2.73205,
+        }
+      }
+    },
   },
   data() {
     return {
@@ -70,22 +86,28 @@ export default {
   computed: {
     pathStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
-        strokeWidth: 2.73205 * this.scale,
+        stroke: this.options.themeColor,
+        strokeWidth: this.options.linkWidth * this.options.scale,
         fill: 'none',
+      }
+    },
+    deleteStyle() {
+      return {
+        fill: this.options.labelColor,
+        fontSize: this.options.linkWidth * 8,
       }
     },
     arrowStyle() {
       return {
-        stroke: 'rgb(255, 136, 85)',
-        strokeWidth: 5.73205,
+        stroke: this.options.themeColor,
+        strokeWidth: 2 * this.options.linkWidth,
         fill: 'none',
       }
     },
     arrowTransform() {
       const [arrowX, arrowY] = this.calculateCenterPoint();
       const degree = this.calculateRotation();
-      return `translate(${arrowX}, ${arrowY}) rotate(${degree}) scale(${this.scale})`;
+      return `translate(${arrowX}, ${arrowY}) rotate(${degree}) scale(${this.options.scale})`;
     },
     dAttr() {
       const sx = this.start[0];

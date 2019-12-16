@@ -1,18 +1,24 @@
 <template>
-  <div class="flowchart-container"
+  <div
+    class="flowchart-container"
     @mousemove="handleMove"
     @mouseup="handleUp"
     @mousedown="handleDown">
-    <svg width="100%" :height="`${height}px`">
-      <flowchart-link v-bind.sync="link"
-        v-for="(link, index) in lines"
-        :key="`link${index}`"
+    <svg
+      width="100%"
+      :height="`${height}px`">
+      <flowchart-link
+        v-bind.sync="link"
+        v-for="link in lines"
+        :key="link.id"
+        :options="linkOptions"
         @deleteLink="linkDelete(link.id)">
       </flowchart-link>
     </svg>
-    <flowchart-node v-bind.sync="node"
-      v-for="(node, index) in scene.nodes"
-      :key="`node${index}`"
+    <flowchart-node
+      v-bind.sync="node"
+      v-for="node in scene.nodes"
+      :key="node.id"
       :options="nodeOptions"
       @linkingStart="linkingStart(node.id)"
       @linkingStop="linkingStop(node.id)"
@@ -25,6 +31,14 @@
 import FlowchartLink from './FlowchartLink.vue';
 import FlowchartNode from './FlowchartNode.vue';
 import { getMousePosition } from '../assets/utilty/position';
+
+const defaultWidth = 80;
+const defaultHeight = 80;
+const defaultThemeColor = '#ff8855';
+const defaultNodeBgColor = '#fff';
+const defaultTypeColor = '#fff';
+const defaultLabelColor = '#2c3e50';
+const defaultLinkWidth = 2.73205;
 
 export default {
   name: 'VueFlowchart',
@@ -39,6 +53,15 @@ export default {
           nodes: [],
           links: [],
           orientation: 'vert',
+          styles: {
+            nodeWidth: defaultWidth,
+            nodeHeight: defaultHeight,
+            themeColor: defaultThemeColor,
+            nodeBgColor: defaultNodeBgColor,
+            typeColor: defaultTypeColor,
+            labelColor: defaultLabelColor,
+            linkWidth: defaultLinkWidth,
+          }
         }
       }
     },
@@ -73,15 +96,47 @@ export default {
     FlowchartNode,
   },
   computed: {
+    scale() {
+      return this.scene.scale || 1;
+    },
+    orientation() {
+      return this.scene.orientation || 'vert';
+    },
+    styles() {
+      return {
+        ...{
+          nodeWidth: defaultWidth,
+          nodeHeight: defaultHeight,
+          themeColor: defaultThemeColor,
+          nodeBgColor: defaultNodeBgColor,
+          typeColor: defaultTypeColor,
+          labelColor: defaultLabelColor,
+          linkWidth: defaultLinkWidth,
+        },
+        ...this.scene.styles
+      };
+    },
     nodeOptions() {
       return {
         centerY: this.scene.centerY,
         centerX: this.scene.centerX,
-        scale: this.scene.scale,
-        offsetTop: this.rootDivOffset.top,
-        offsetLeft: this.rootDivOffset.left,
+        scale: this.scale,
         selected: this.action.selected,
-        orientation: this.scene.orientation,
+        orientation: this.orientation,
+        width: this.styles.nodeWidth,
+        height: this.styles.nodeHeight,
+        themeColor: this.styles.themeColor,
+        nodeBgColor: this.styles.nodeBgColor,
+        typeColor: this.styles.typeColor,
+        labelColor: this.styles.labelColor,
+      }
+    },
+    linkOptions() {
+      return {
+        scale: this.scale,
+        themeColor: this.styles.themeColor,
+        labelColor: this.styles.labelColor,
+        linkWidth: this.styles.linkWidth,
       }
     },
     lines() {
@@ -93,7 +148,6 @@ export default {
         return {
           start: [sx, sy],
           end: [ex, ey],
-          scale: this.scene.scale,
           id: link.id,
         };
       });
@@ -103,7 +157,6 @@ export default {
         lines.push({
           start: [sx, sy],
           end: [this.draggingLink.mx, this.draggingLink.my],
-          scale: this.scene.scale,
         })
       }
       return lines;
@@ -118,24 +171,26 @@ export default {
       return this.scene.nodes.find(item => id === item.id)
     },
     getPortPosition(node, type) {
-      const orientation = this.scene.orientation;
-      const scale = this.scene.scale;
+      const orientation = this.orientation;
+      const scale = this.scale;
       const x = this.scene.centerX + node.x * scale;
       const y = this.scene.centerY + node.y * scale;
 
+      const width = this.styles.nodeWidth;
+      const height = this.styles.nodeHeight;
       if (orientation === 'vert') {
-        const left = x + 40 * scale;
+        const left = x + (width / 2) * scale;
         if (type === 'input') {
           return [left, y];
         }
-        return [left, y + 80 * scale];
+        return [left, y + height * scale];
       }
 
-      const top = y + 40 * scale;
+      const top = y + (height / 2) * scale;
       if (type === 'input') {
         return [x, top];
       }
-      return [x + 80 * scale, top];
+      return [x + width * scale, top];
     },
     linkingStart(index) {
       const fromNode = this.findNodeWithID(index);
@@ -234,8 +289,8 @@ export default {
     moveSelectedNode(dx, dy) {
       const index = this.scene.nodes.findIndex(item => item.id === this.action.dragging);
       const node = this.scene.nodes[index];
-      const left = node.x + dx / this.scene.scale;
-      const top = node.y + dy / this.scene.scale;
+      const left = node.x + dx / this.scale;
+      const top = node.y + dy / this.scale;
       this.$set(this.scene.nodes, index, Object.assign(node, {
         x: left,
         y: top,
