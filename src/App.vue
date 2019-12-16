@@ -2,14 +2,20 @@
   <div id="app">
     <h1> simple flowchart</h1>
     <div class="tool-wrapper">
-      <select v-model="newNodeType">
-        <option v-for="(item, index) in nodeCategory" :key="index" :value="index">{{item}}</option>
-      </select>
-      <input type="text" v-model="newNodeLabel" placeholder="Input node label">
-      <button @click="addNode">ADD</button>
+      <div>
+        <select v-model="newNodeType">
+          <option v-for="(item, index) in nodeCategory" :key="index" :value="index">{{item}}</option>
+        </select>
+        <input type="text" v-model="newNodeLabel" placeholder="Input node label">
+        <button @click="addNode">ADD</button>
+      </div>
+      <div>
+        <label for="scale">Scale</label>
+        <input id="scale" type="number" min="0.1" step="0.1" v-model="scene.scale"/>
+      </div>
     </div>
-    
-    <simple-flowchart :scene.sync="scene" 
+
+    <simple-flowchart :scene.sync="scene"
       @nodeClick="nodeClick"
       @nodeDelete="nodeDelete"
       @linkBreak="linkBreak"
@@ -20,6 +26,7 @@
 </template>
 
 <script>
+  /* eslint-disable */
 import SimpleFlowchart from './components/SimpleFlowchart.vue'
 
 export default {
@@ -78,19 +85,17 @@ export default {
   },
   methods: {
     canvasClick(e) {
-      console.log('canvas Click, event:', e)
+      console.log('canvas Click, event:', e);
     },
     addNode() {
-      let maxID = Math.max(0, ...this.scene.nodes.map((link) => {
-        return link.id
-      }))
+      const maxID = Math.max(0, ...this.scene.nodes.map(link => link.id));
       this.scene.nodes.push({
         id: maxID + 1,
         x: -400,
         y: 50,
         type: this.nodeCategory[this.newNodeType],
         label: this.newNodeLabel ? this.newNodeLabel: `test${maxID + 1}`,
-      })
+      });
     },
     nodeClick(id) {
       console.log('node click', id);
@@ -118,8 +123,13 @@ export default {
   margin: 0;
   overflow: hidden;
   height: 800px;
-  .tool-wrapper {
-    position: relative;
+}
+
+.tool-wrapper {
+  position: relative;
+
+  > div {
+    margin: 10px 0;
   }
 }
 </style>
