@@ -39,6 +39,8 @@ const defaultNodeBgColor = '#fff';
 const defaultTypeColor = '#fff';
 const defaultLabelColor = '#2c3e50';
 const defaultLinkWidth = 2.73205;
+const autoScrollStep = 8;
+const autoScrollTimeout = 100;
 
 export default {
   name: 'VueFlowchart',
@@ -233,31 +235,29 @@ export default {
       this.action.dragging = id;
       this.action.selected = id;
       this.$emit('nodeClick', id);
-      this.mouse.lastX = e.pageX || e.clientX + document.documentElement.scrollLeft;
-      this.mouse.lastY = e.pageY || e.clientY + document.documentElement.scrollTop;
+      [this.mouse.lastX, this.mouse.lastY] = getMousePosition(this.$el, e);
     },
     handleMove(e) {
       if (this.action.linking) {
-        [this.mouse.x, this.mouse.y] = getMousePosition(this.$el, e);
-        [this.draggingLink.mx, this.draggingLink.my] = [this.mouse.x, this.mouse.y];
-      }
-      if (this.action.dragging) {
-        this.mouse.x = e.pageX || e.clientX + document.documentElement.scrollLeft;
-        this.mouse.y = e.pageY || e.clientY + document.documentElement.scrollTop;
-        const diffX = this.mouse.x - this.mouse.lastX;
-        const diffY = this.mouse.y - this.mouse.lastY;
+        [this.draggingLink.mx, this.draggingLink.my] = getMousePosition(this.$el, e);
+      } else if (this.action.dragging) {
+        const [mouseX, mouseY] = getMousePosition(this.$el, e);
+        const diffX = mouseX - this.mouse.lastX;
+        const diffY = mouseY - this.mouse.lastY;
 
-        this.mouse.lastX = this.mouse.x;
-        this.mouse.lastY = this.mouse.y;
+        this.mouse.lastX = mouseX;
+        this.mouse.lastY = mouseY;
+        this.mouse.lastEvent = e;
+
         this.moveSelectedNode(diffX, diffY);
-      }
-      if (this.action.scrolling) {
-        [this.mouse.x, this.mouse.y] = getMousePosition(this.$el, e);
-        const diffX = this.mouse.x - this.mouse.lastX;
-        const diffY = this.mouse.y - this.mouse.lastY;
+        this.startAutoScroll();
+      } else if (this.action.scrolling) {
+        const [mouseX, mouseY] = getMousePosition(this.$el, e);
+        const diffX = mouseX - this.mouse.lastX;
+        const diffY = mouseY - this.mouse.lastY;
 
-        this.mouse.lastX = this.mouse.x;
-        this.mouse.lastY = this.mouse.y;
+        this.mouse.lastX = mouseX;
+        this.mouse.lastY = mouseY;
 
         this.scene.centerX += diffX;
         this.scene.centerY += diffY;
@@ -276,6 +276,7 @@ export default {
       this.action.linking = false;
       this.action.dragging = null;
       this.action.scrolling = false;
+      this.stopAutoScroll();
     },
     handleDown(e) {
       const target = e.target || e.srcElement;
@@ -295,6 +296,41 @@ export default {
         x: left,
         y: top,
       }));
+    },
+    startAutoScroll() {
+      if (!this.autoScrollId) {
+        this.autoScrollId = setInterval(this.autoScroll.bind(this), autoScrollTimeout);
+      }
+    },
+    stopAutoScroll() {
+      if (this.autoScrollId) {
+        clearInterval(this.autoScrollId);
+        this.autoScrollId = null;
+      }
+    },
+    autoScroll() {
+      const [mouseX, mouseY] = getMousePosition(this.$el, this.mouse.lastEvent);
+      const {width, height} = this.$el.getBoundingClientRect();
+      const widthThreshold = this.styles.nodeWidth / 2;
+      const heightThreshold = this.styles.nodeHeight / 2;
+      let diffX = 0;
+      let diffY = 0;
+
+      if (mouseX < widthThreshold) {
+        diffX = -autoScrollStep;
+      } else if (width - mouseX < widthThreshold) {
+        diffX = autoScrollStep;
+      }
+      if (mouseY < heightThreshold) {
+        diffY = -autoScrollStep;
+      } else if (height - mouseY < heightThreshold) {
+        diffY = autoScrollStep;
+      }
+      if (diffX !== 0 || diffY !== 0) {
+        this.moveSelectedNode(diffX, diffY);
+        this.scene.centerX -= diffX;
+        this.scene.centerY -= diffY;
+      }
     },
     nodeDelete(id) {
       this.scene.nodes = this.scene.nodes.filter(node => node.id !== id);

@@ -127,7 +127,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin: 0;
-  overflow: hidden;
   height: 800px;
 }
 

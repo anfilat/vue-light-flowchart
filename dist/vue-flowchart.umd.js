@@ -325,6 +325,17 @@ module.exports = __webpack_require__("9e1e") ? Object.defineProperties : functio
 
 /***/ }),
 
+/***/ "14ba":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_4b5bf75b_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("e6c2");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_4b5bf75b_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_4b5bf75b_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_4b5bf75b_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "1654":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -358,13 +369,6 @@ module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-
-/***/ }),
-
-/***/ "176c":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -1469,17 +1473,6 @@ for (var i = 0; i < DOMIterables.length; i++) {
   Iterators[NAME] = Iterators.Array;
 }
 
-
-/***/ }),
-
-/***/ "6f0f":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_d03aa168_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("176c");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_d03aa168_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_d03aa168_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_8_oneOf_1_0_node_modules_css_loader_index_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SimpleFlowchart_vue_vue_type_style_index_0_id_d03aa168_scoped_true_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -2624,6 +2617,13 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 /***/ }),
 
+/***/ "e6c2":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "e6f3":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2789,12 +2789,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a6cfc9f-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SimpleFlowchart.vue?vue&type=template&id=d03aa168&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2a6cfc9f-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SimpleFlowchart.vue?vue&type=template&id=4b5bf75b&scoped=true&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"flowchart-container",on:{"mousemove":_vm.handleMove,"mouseup":_vm.handleUp,"mousedown":_vm.handleDown}},[_c('svg',{attrs:{"width":"100%","height":(_vm.height + "px")}},_vm._l((_vm.lines),function(link){return _c('flowchart-link',_vm._b({key:link.id,attrs:{"options":_vm.linkOptions},on:{"deleteLink":function($event){return _vm.linkDelete(link.id)}}},'flowchart-link',link,false,true))}),1),_vm._l((_vm.scene.nodes),function(node){return _c('flowchart-node',_vm._b({key:node.id,attrs:{"options":_vm.nodeOptions},on:{"linkingStart":function($event){return _vm.linkingStart(node.id)},"linkingStop":function($event){return _vm.linkingStop(node.id)},"nodeSelected":function($event){return _vm.nodeSelected(node.id, $event)}}},'flowchart-node',node,false,true))})],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/SimpleFlowchart.vue?vue&type=template&id=d03aa168&scoped=true&
+// CONCATENATED MODULE: ./src/components/SimpleFlowchart.vue?vue&type=template&id=4b5bf75b&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es7.object.get-own-property-descriptors.js
 var es7_object_get_own_property_descriptors = __webpack_require__("8e6e");
@@ -3422,6 +3422,8 @@ var defaultNodeBgColor = '#fff';
 var defaultTypeColor = '#fff';
 var defaultLabelColor = '#2c3e50';
 var defaultLinkWidth = 2.73205;
+var autoScrollStep = 8;
+var autoScrollTimeout = 100;
 /* harmony default export */ var SimpleFlowchartvue_type_script_lang_js_ = ({
   name: 'VueFlowchart',
   props: {
@@ -3653,46 +3655,47 @@ var defaultLinkWidth = 2.73205;
       this.action.dragging = id;
       this.action.selected = id;
       this.$emit('nodeClick', id);
-      this.mouse.lastX = e.pageX || e.clientX + document.documentElement.scrollLeft;
-      this.mouse.lastY = e.pageY || e.clientY + document.documentElement.scrollTop;
+
+      var _getMousePosition = getMousePosition(this.$el, e);
+
+      var _getMousePosition2 = _slicedToArray(_getMousePosition, 2);
+
+      this.mouse.lastX = _getMousePosition2[0];
+      this.mouse.lastY = _getMousePosition2[1];
     },
     handleMove: function handleMove(e) {
       if (this.action.linking) {
-        var _getMousePosition = getMousePosition(this.$el, e);
-
-        var _getMousePosition2 = _slicedToArray(_getMousePosition, 2);
-
-        this.mouse.x = _getMousePosition2[0];
-        this.mouse.y = _getMousePosition2[1];
-        var _ref = [this.mouse.x, this.mouse.y];
-        this.draggingLink.mx = _ref[0];
-        this.draggingLink.my = _ref[1];
-      }
-
-      if (this.action.dragging) {
-        this.mouse.x = e.pageX || e.clientX + document.documentElement.scrollLeft;
-        this.mouse.y = e.pageY || e.clientY + document.documentElement.scrollTop;
-        var diffX = this.mouse.x - this.mouse.lastX;
-        var diffY = this.mouse.y - this.mouse.lastY;
-        this.mouse.lastX = this.mouse.x;
-        this.mouse.lastY = this.mouse.y;
-        this.moveSelectedNode(diffX, diffY);
-      }
-
-      if (this.action.scrolling) {
         var _getMousePosition3 = getMousePosition(this.$el, e);
 
         var _getMousePosition4 = _slicedToArray(_getMousePosition3, 2);
 
-        this.mouse.x = _getMousePosition4[0];
-        this.mouse.y = _getMousePosition4[1];
+        this.draggingLink.mx = _getMousePosition4[0];
+        this.draggingLink.my = _getMousePosition4[1];
+      } else if (this.action.dragging) {
+        var _getMousePosition5 = getMousePosition(this.$el, e),
+            _getMousePosition6 = _slicedToArray(_getMousePosition5, 2),
+            mouseX = _getMousePosition6[0],
+            mouseY = _getMousePosition6[1];
 
-        var _diffX = this.mouse.x - this.mouse.lastX;
+        var diffX = mouseX - this.mouse.lastX;
+        var diffY = mouseY - this.mouse.lastY;
+        this.mouse.lastX = mouseX;
+        this.mouse.lastY = mouseY;
+        this.mouse.lastEvent = e;
+        this.moveSelectedNode(diffX, diffY);
+        this.startAutoScroll();
+      } else if (this.action.scrolling) {
+        var _getMousePosition7 = getMousePosition(this.$el, e),
+            _getMousePosition8 = _slicedToArray(_getMousePosition7, 2),
+            _mouseX = _getMousePosition8[0],
+            _mouseY = _getMousePosition8[1];
 
-        var _diffY = this.mouse.y - this.mouse.lastY;
+        var _diffX = _mouseX - this.mouse.lastX;
 
-        this.mouse.lastX = this.mouse.x;
-        this.mouse.lastY = this.mouse.y;
+        var _diffY = _mouseY - this.mouse.lastY;
+
+        this.mouse.lastX = _mouseX;
+        this.mouse.lastY = _mouseY;
         this.scene.centerX += _diffX;
         this.scene.centerY += _diffY;
       }
@@ -3713,6 +3716,7 @@ var defaultLinkWidth = 2.73205;
       this.action.linking = false;
       this.action.dragging = null;
       this.action.scrolling = false;
+      this.stopAutoScroll();
     },
     handleDown: function handleDown(e) {
       var target = e.target || e.srcElement;
@@ -3720,12 +3724,12 @@ var defaultLinkWidth = 2.73205;
       if ((target === this.$el || target.matches('svg, svg *')) && e.which === 1) {
         this.action.scrolling = true;
 
-        var _getMousePosition5 = getMousePosition(this.$el, e);
+        var _getMousePosition9 = getMousePosition(this.$el, e);
 
-        var _getMousePosition6 = _slicedToArray(_getMousePosition5, 2);
+        var _getMousePosition10 = _slicedToArray(_getMousePosition9, 2);
 
-        this.mouse.lastX = _getMousePosition6[0];
-        this.mouse.lastY = _getMousePosition6[1];
+        this.mouse.lastX = _getMousePosition10[0];
+        this.mouse.lastY = _getMousePosition10[1];
         this.action.selected = null; // deselectAll
       }
 
@@ -3745,6 +3749,50 @@ var defaultLinkWidth = 2.73205;
         y: top
       }));
     },
+    startAutoScroll: function startAutoScroll() {
+      if (!this.autoScrollId) {
+        this.autoScrollId = setInterval(this.autoScroll.bind(this), autoScrollTimeout);
+      }
+    },
+    stopAutoScroll: function stopAutoScroll() {
+      if (this.autoScrollId) {
+        clearInterval(this.autoScrollId);
+        this.autoScrollId = null;
+      }
+    },
+    autoScroll: function autoScroll() {
+      var _getMousePosition11 = getMousePosition(this.$el, this.mouse.lastEvent),
+          _getMousePosition12 = _slicedToArray(_getMousePosition11, 2),
+          mouseX = _getMousePosition12[0],
+          mouseY = _getMousePosition12[1];
+
+      var _this$$el$getBounding = this.$el.getBoundingClientRect(),
+          width = _this$$el$getBounding.width,
+          height = _this$$el$getBounding.height;
+
+      var widthThreshold = this.styles.nodeWidth / 2;
+      var heightThreshold = this.styles.nodeHeight / 2;
+      var diffX = 0;
+      var diffY = 0;
+
+      if (mouseX < widthThreshold) {
+        diffX = -autoScrollStep;
+      } else if (width - mouseX < widthThreshold) {
+        diffX = autoScrollStep;
+      }
+
+      if (mouseY < heightThreshold) {
+        diffY = -autoScrollStep;
+      } else if (height - mouseY < heightThreshold) {
+        diffY = autoScrollStep;
+      }
+
+      if (diffX !== 0 || diffY !== 0) {
+        this.moveSelectedNode(diffX, diffY);
+        this.scene.centerX -= diffX;
+        this.scene.centerY -= diffY;
+      }
+    },
     nodeDelete: function nodeDelete(id) {
       this.scene.nodes = this.scene.nodes.filter(function (node) {
         return node.id !== id;
@@ -3758,8 +3806,8 @@ var defaultLinkWidth = 2.73205;
 });
 // CONCATENATED MODULE: ./src/components/SimpleFlowchart.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_SimpleFlowchartvue_type_script_lang_js_ = (SimpleFlowchartvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/SimpleFlowchart.vue?vue&type=style&index=0&id=d03aa168&scoped=true&lang=scss&
-var SimpleFlowchartvue_type_style_index_0_id_d03aa168_scoped_true_lang_scss_ = __webpack_require__("6f0f");
+// EXTERNAL MODULE: ./src/components/SimpleFlowchart.vue?vue&type=style&index=0&id=4b5bf75b&scoped=true&lang=scss&
+var SimpleFlowchartvue_type_style_index_0_id_4b5bf75b_scoped_true_lang_scss_ = __webpack_require__("14ba");
 
 // CONCATENATED MODULE: ./src/components/SimpleFlowchart.vue
 
@@ -3776,7 +3824,7 @@ var SimpleFlowchart_component = normalizeComponent(
   staticRenderFns,
   false,
   null,
-  "d03aa168",
+  "4b5bf75b",
   null
   
 )
