@@ -1,19 +1,19 @@
 <template>
-  <div class="flowchart-node" :style="nodeStyle" 
-    @mousedown="handleMousedown"
+  <div class="flowchart-node" :style="nodeStyle"
+    @mousedown.prevent="handleMousedown"
     @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave"
     v-bind:class="{selected: options.selected === id}">
     <div class="node-port node-input"
        @mousedown="inputMouseDown"
-       @mouseup="inputMouseUp">
+       @mouseup.prevent="inputMouseUp">
     </div>
     <div class="node-main">
       <div v-text="type" class="node-type"></div>
       <div v-text="label" class="node-label"></div>
     </div>
-    <div class="node-port node-output" 
-      @mousedown="outputMouseDown">
+    <div class="node-port node-output"
+      @mousedown.prevent="outputMouseDown">
     </div>
     <div v-show="show.delete" class="node-delete">&times;</div>
   </div>
@@ -36,7 +36,7 @@ export default {
       validator(val) {
         return typeof val === 'number'
       }
-    },    
+    },
     y: {
       type: Number,
       default: 0,
@@ -70,13 +70,11 @@ export default {
       }
     }
   },
-  mounted() {
-  },
   computed: {
     nodeStyle() {
       return {
-        top: this.options.centerY + this.y * this.options.scale + 'px', // remove: this.options.offsetTop + 
-        left: this.options.centerX + this.x * this.options.scale + 'px', // remove: this.options.offsetLeft + 
+        top: this.options.centerY + this.y * this.options.scale + 'px',
+        left: this.options.centerX + this.x * this.options.scale + 'px',
         transform: `scale(${this.options.scale})`,
       }
     }
@@ -84,11 +82,9 @@ export default {
   methods: {
     handleMousedown(e) {
       const target = e.target || e.srcElement;
-      // console.log(target);
       if (target.className.indexOf('node-input') < 0 && target.className.indexOf('node-output') < 0) {
         this.$emit('nodeSelected', e);
       }
-      e.preventDefault();
     },
     handleMouseOver() {
       this.show.delete = true;
@@ -96,16 +92,14 @@ export default {
     handleMouseLeave() {
       this.show.delete = false;
     },
-    outputMouseDown(e) {
-      this.$emit('linkingStart')
-      e.preventDefault();
+    outputMouseDown() {
+      this.$emit('linkingStart');
     },
     inputMouseDown(e) {
       e.preventDefault();
     },
-    inputMouseUp(e) {
-      this.$emit('linkingStop')
-      e.preventDefault();
+    inputMouseUp() {
+      this.$emit('linkingStop');
     },
   }
 }
@@ -128,18 +122,22 @@ $portSize: 12;
   opacity: .9;
   cursor: move;
   transform-origin: top left;
+
   .node-main {
     text-align: center;
+
     .node-type {
       background: $themeColor;
       color: white;
       font-size: 13px;
       padding: 6px;
     }
+
     .node-label {
       font-size: 13px;
     }
   }
+
   .node-port {
     position: absolute;
     width: #{$portSize}px;
@@ -149,17 +147,21 @@ $portSize: 12;
     border: 1px solid #ccc;
     border-radius: 100px;
     background: white;
+
     &:hover {
       background: $themeColor;
       border: 1px solid $themeColor;
     }
   }
+
   .node-input {
     top: #{-2+$portSize/-2}px;
   }
+
   .node-output {
     bottom: #{-2+$portSize/-2}px;
   }
+
   .node-delete {
     position: absolute;
     right: -6px;
@@ -173,12 +175,14 @@ $portSize: 12;
     border: 1px solid $themeColor;
     border-radius: 100px;
     text-align: center;
+
     &:hover{
       background: $themeColor;
       color: white;
     }
   }
 }
+
 .selected {
   box-shadow: 0 0 0 2px $themeColor;
 }

@@ -51,20 +51,20 @@ export default {
     handleMouseLeave() {
       this.show.delete = false;
     },
-    caculateCenterPoint() {
-      // caculate arrow position: the center point between start and end
+    calculateCenterPoint() {
+      // calculate arrow position: the center point between start and end
       const dx = (this.end[0] - this.start[0]) / 2;
       const dy = (this.end[1] - this.start[1]) / 2;
       return [this.start[0] + dx, this.start[1] + dy];
     },
-    caculateRotation() {
-      // caculate arrow rotation
+    calculateRotation() {
+      // calculate arrow rotation
       const angle = -Math.atan2(this.end[0] - this.start[0], this.end[1] - this.start[1]);
       const degree = angle * 180 / Math.PI;
       return degree < 0 ? degree + 360 : degree;
     },
     deleteLink() {
-      this.$emit('deleteLink')
+      this.$emit('deleteLink');
     }
   },
   computed: {
@@ -83,14 +83,20 @@ export default {
       }
     },
     arrowTransform() {
-      const [arrowX, arrowY] = this.caculateCenterPoint();
-      const degree = this.caculateRotation()
+      const [arrowX, arrowY] = this.calculateCenterPoint();
+      const degree = this.calculateRotation();
       return `translate(${arrowX}, ${arrowY}) rotate(${degree}) scale(${this.scale})`;
     },
     dAttr() {
-      let cx = this.start[0], cy = this.start[1], ex = this.end[0], ey = this.end[1];
-      let x1 = cx, y1 = cy + 50, x2 = ex, y2 = ey - 50;
-      return `M ${cx}, ${cy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
+      const sx = this.start[0];
+      const sy = this.start[1];
+      const ex = this.end[0];
+      const ey = this.end[1];
+      const x1 = sx;
+      const y1 = sy + 50;
+      const x2 = ex;
+      const y2 = ey - 50;
+      return `M ${sx}, ${sy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
     }
   }
 }

@@ -11,7 +11,7 @@
       </div>
       <div>
         <label for="scale">Scale</label>
-        <input id="scale" type="number" min="0.1" step="0.1" v-model="scene.scale"/>
+        <input id="scale" type="number" min="0.1" step="0.1" v-model.number="scene.scale"/>
       </div>
     </div>
 

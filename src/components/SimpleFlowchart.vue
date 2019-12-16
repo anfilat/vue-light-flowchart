@@ -84,23 +84,22 @@ export default {
     },
     lines() {
       const lines = this.scene.links.map((link) => {
-        const fromNode = this.findNodeWithID(link.from)
-        const toNode = this.findNodeWithID(link.to)
-        const [cx, cy] = this.getPortPosition(fromNode, 'bottom');
+        const fromNode = this.findNodeWithID(link.from);
+        const toNode = this.findNodeWithID(link.to);
+        const [sx, sy] = this.getPortPosition(fromNode, 'bottom');
         const [ex, ey] = this.getPortPosition(toNode, 'top');
         return {
-          start: [cx, cy],
+          start: [sx, sy],
           end: [ex, ey],
           scale: this.scene.scale,
           id: link.id,
         };
-      })
+      });
       if (this.draggingLink) {
-        const fromNode = this.findNodeWithID(this.draggingLink.from)
-        const [cx, cy] = this.getPortPosition(fromNode, 'bottom');
-        // push temp dragging link, mouse cursor postion = link end postion
+        const fromNode = this.findNodeWithID(this.draggingLink.from);
+        const [sx, sy] = this.getPortPosition(fromNode, 'bottom');
         lines.push({
-          start: [cx, cy],
+          start: [sx, sy],
           end: [this.draggingLink.mx, this.draggingLink.my],
           scale: this.scene.scale,
         })
@@ -111,13 +110,10 @@ export default {
   mounted() {
     this.rootDivOffset.top = this.$el ? this.$el.offsetTop : 0;
     this.rootDivOffset.left = this.$el ? this.$el.offsetLeft : 0;
-    // console.log(22222, this.rootDivOffset);
   },
   methods: {
     findNodeWithID(id) {
-      return this.scene.nodes.find((item) => {
-          return id === item.id
-      })
+      return this.scene.nodes.find(item => id === item.id)
     },
     getPortPosition(node, type) {
       const scale = this.scene.scale;
@@ -146,30 +142,24 @@ export default {
         // check link existence
         const existed = this.scene.links.find((link) => {
           return link.from === this.draggingLink.from && link.to === index;
-        })
+        });
         if (!existed) {
-          let maxID = Math.max(0, ...this.scene.links.map((link) => {
-            return link.id
-          }))
+          const maxID = Math.max(0, ...this.scene.links.map(link => link.id));
           const newLink = {
             id: maxID + 1,
             from: this.draggingLink.from,
             to: index,
           };
-          this.scene.links.push(newLink)
+          this.scene.links.push(newLink);
           this.$emit('linkAdded', newLink)
         }
       }
-      this.draggingLink = null
+      this.draggingLink = null;
     },
     linkDelete(id) {
-      const deletedLink = this.scene.links.find((item) => {
-          return item.id === id;
-      });
+      const deletedLink = this.scene.links.find(item => item.id === id);
       if (deletedLink) {
-        this.scene.links = this.scene.links.filter((item) => {
-            return item.id !== id;
-        });
+        this.scene.links = this.scene.links.filter(item => item.id !== id);
         this.$emit('linkBreak', deletedLink);
       }
     },
@@ -177,8 +167,8 @@ export default {
       this.action.dragging = id;
       this.action.selected = id;
       this.$emit('nodeClick', id);
-      this.mouse.lastX = e.pageX || e.clientX + document.documentElement.scrollLeft
-      this.mouse.lastY = e.pageY || e.clientY + document.documentElement.scrollTop
+      this.mouse.lastX = e.pageX || e.clientX + document.documentElement.scrollLeft;
+      this.mouse.lastY = e.pageY || e.clientY + document.documentElement.scrollTop;
     },
     handleMove(e) {
       if (this.action.linking) {
@@ -186,10 +176,10 @@ export default {
         [this.draggingLink.mx, this.draggingLink.my] = [this.mouse.x, this.mouse.y];
       }
       if (this.action.dragging) {
-        this.mouse.x = e.pageX || e.clientX + document.documentElement.scrollLeft
-        this.mouse.y = e.pageY || e.clientY + document.documentElement.scrollTop
-        let diffX = this.mouse.x - this.mouse.lastX;
-        let diffY = this.mouse.y - this.mouse.lastY;
+        this.mouse.x = e.pageX || e.clientX + document.documentElement.scrollLeft;
+        this.mouse.y = e.pageY || e.clientY + document.documentElement.scrollTop;
+        const diffX = this.mouse.x - this.mouse.lastX;
+        const diffY = this.mouse.y - this.mouse.lastY;
 
         this.mouse.lastX = this.mouse.x;
         this.mouse.lastY = this.mouse.y;
@@ -197,16 +187,14 @@ export default {
       }
       if (this.action.scrolling) {
         [this.mouse.x, this.mouse.y] = getMousePosition(this.$el, e);
-        let diffX = this.mouse.x - this.mouse.lastX;
-        let diffY = this.mouse.y - this.mouse.lastY;
+        const diffX = this.mouse.x - this.mouse.lastX;
+        const diffY = this.mouse.y - this.mouse.lastY;
 
         this.mouse.lastX = this.mouse.x;
         this.mouse.lastY = this.mouse.y;
 
         this.scene.centerX += diffX;
         this.scene.centerY += diffY;
-
-        // this.hasDragged = true
       }
     },
     handleUp(e) {
@@ -216,7 +204,6 @@ export default {
           this.draggingLink = null;
         }
         if (typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
-          // console.log('delete2', this.action.dragging);
           this.nodeDelete(this.action.dragging);
         }
       }
@@ -226,7 +213,6 @@ export default {
     },
     handleDown(e) {
       const target = e.target || e.srcElement;
-      // console.log('for scroll', target, e.keyCode, e.which)
       if ((target === this.$el || target.matches('svg, svg *')) && e.which === 1) {
         this.action.scrolling = true;
         [this.mouse.lastX, this.mouse.lastY] = getMousePosition(this.$el, e);
@@ -235,24 +221,19 @@ export default {
       this.$emit('canvasClick', e);
     },
     moveSelectedNode(dx, dy) {
-      let index = this.scene.nodes.findIndex((item) => {
-        return item.id === this.action.dragging
-      })
-      let left = this.scene.nodes[index].x + dx / this.scene.scale;
-      let top = this.scene.nodes[index].y + dy / this.scene.scale;
-      this.$set(this.scene.nodes, index, Object.assign(this.scene.nodes[index], {
+      const index = this.scene.nodes.findIndex(item => item.id === this.action.dragging);
+      const node = this.scene.nodes[index];
+      const left = node.x + dx / this.scene.scale;
+      const top = node.y + dy / this.scene.scale;
+      this.$set(this.scene.nodes, index, Object.assign(node, {
         x: left,
         y: top,
       }));
     },
     nodeDelete(id) {
-      this.scene.nodes = this.scene.nodes.filter((node) => {
-        return node.id !== id;
-      })
-      this.scene.links = this.scene.links.filter((link) => {
-        return link.from !== id && link.to !== id
-      })
-      this.$emit('nodeDelete', id)
+      this.scene.nodes = this.scene.nodes.filter(node => node.id !== id);
+      this.scene.links = this.scene.links.filter(link => link.from !== id && link.to !== id);
+      this.$emit('nodeDelete', id);
     }
   },
 }
@@ -265,6 +246,7 @@ export default {
   background: #ddd;
   position: relative;
   overflow: hidden;
+
   svg {
     cursor: grab;
   }
