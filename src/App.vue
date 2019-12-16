@@ -12,6 +12,11 @@
       <div>
         <label for="scale">Scale</label>
         <input id="scale" type="number" min="0.1" step="0.1" v-model.number="scene.scale"/>
+        <label for="orientation">Orientation</label>
+        <select id="orientation" v-model="scene.orientation">
+          <option value="vert">Vertical</option>
+          <option value="hor">Horizontal</option>
+        </select>
       </div>
     </div>
 
@@ -69,7 +74,8 @@ export default {
             from: 2, // node id the link start
             to: 4,  // node id the link end
           }
-        ]
+        ],
+        orientation: 'vert',
       },
       newNodeType: 0,
       newNodeLabel: '',
@@ -130,6 +136,10 @@ export default {
 
   > div {
     margin: 10px 0;
+  }
+
+  label {
+    margin-right: 20px;
   }
 }
 </style>

@@ -1,9 +1,10 @@
 <template>
-  <div class="flowchart-node" :style="nodeStyle"
+  <div class="flowchart-node"
+    :class="[{selected: options.selected === id}, options.orientation === 'vert' ? 'vert' : 'hor']"
+    :style="nodeStyle"
     @mousedown.prevent="handleMousedown"
     @mouseover="handleMouseOver"
-    @mouseleave="handleMouseLeave"
-    v-bind:class="{selected: options.selected === id}">
+    @mouseleave="handleMouseLeave">
     <div class="node-port node-input"
        @mousedown="inputMouseDown"
        @mouseup.prevent="inputMouseUp">
@@ -59,6 +60,7 @@ export default {
           centerX: 1024,
           scale: 1,
           centerY: 140,
+          orientation: 'vert',
         }
       }
     }
@@ -142,10 +144,8 @@ $portSize: 12;
     position: absolute;
     width: #{$portSize}px;
     height: #{$portSize}px;
-    left: 50%;
-    transform: translate(-50%);
     border: 1px solid #ccc;
-    border-radius: 100px;
+    border-radius: 50%;
     background: white;
 
     &:hover {
@@ -154,12 +154,34 @@ $portSize: 12;
     }
   }
 
-  .node-input {
-    top: #{-2+$portSize/-2}px;
+  &.vert {
+    .node-port {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .node-input {
+      top: #{-2+$portSize/-2}px;
+    }
+
+    .node-output {
+      bottom: #{-2+$portSize/-2}px;
+    }
   }
 
-  .node-output {
-    bottom: #{-2+$portSize/-2}px;
+  &.hor {
+    .node-port {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .node-input {
+      left: #{-2+$portSize/-2}px;
+    }
+
+    .node-output {
+      right: #{-2+$portSize/-2}px;
+    }
   }
 
   .node-delete {

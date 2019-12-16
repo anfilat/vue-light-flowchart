@@ -38,6 +38,7 @@ export default {
           centerY: 140,
           nodes: [],
           links: [],
+          orientation: 'vert',
         }
       }
     },
@@ -80,14 +81,15 @@ export default {
         offsetTop: this.rootDivOffset.top,
         offsetLeft: this.rootDivOffset.left,
         selected: this.action.selected,
+        orientation: this.scene.orientation,
       }
     },
     lines() {
       const lines = this.scene.links.map((link) => {
         const fromNode = this.findNodeWithID(link.from);
         const toNode = this.findNodeWithID(link.to);
-        const [sx, sy] = this.getPortPosition(fromNode, 'bottom');
-        const [ex, ey] = this.getPortPosition(toNode, 'top');
+        const [sx, sy] = this.getPortPosition(fromNode, 'output');
+        const [ex, ey] = this.getPortPosition(toNode, 'input');
         return {
           start: [sx, sy],
           end: [ex, ey],
@@ -97,7 +99,7 @@ export default {
       });
       if (this.draggingLink) {
         const fromNode = this.findNodeWithID(this.draggingLink.from);
-        const [sx, sy] = this.getPortPosition(fromNode, 'bottom');
+        const [sx, sy] = this.getPortPosition(fromNode, 'output');
         lines.push({
           start: [sx, sy],
           end: [this.draggingLink.mx, this.draggingLink.my],
@@ -116,19 +118,28 @@ export default {
       return this.scene.nodes.find(item => id === item.id)
     },
     getPortPosition(node, type) {
+      const orientation = this.scene.orientation;
       const scale = this.scene.scale;
       const x = this.scene.centerX + node.x * scale;
       const y = this.scene.centerY + node.y * scale;
-      if (type === 'top') {
-        return [x + 40 * scale, y];
+
+      if (orientation === 'vert') {
+        const left = x + 40 * scale;
+        if (type === 'input') {
+          return [left, y];
+        }
+        return [left, y + 80 * scale];
       }
-      else if (type === 'bottom') {
-        return [x + 40 * scale, y + 80 * scale];
+
+      const top = y + 40 * scale;
+      if (type === 'input') {
+        return [x, top];
       }
+      return [x + 80 * scale, top];
     },
     linkingStart(index) {
       const fromNode = this.findNodeWithID(index);
-      const [mx, my] = this.getPortPosition(fromNode, 'bottom');
+      const [mx, my] = this.getPortPosition(fromNode, 'output');
       this.action.linking = true;
       this.draggingLink = {
         from: index,
