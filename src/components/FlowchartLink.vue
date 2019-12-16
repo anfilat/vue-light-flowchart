@@ -6,12 +6,11 @@
     <a
       v-if="show.delete"
       @click="deleteLink">
-      <text
-        text-anchor="middle"
+      <path
+        d="M -4 -4 L 4 4 M 4 -4 L -4 4"
         :style="deleteStyle"
         :transform="arrowTransform">
-        &times;
-      </text>
+      </path>
     </a>
     <path v-else
       d="M -1 -1 L 0 1 L 1 -1 z"
@@ -93,8 +92,9 @@ export default {
     },
     deleteStyle() {
       return {
-        fill: this.options.labelColor,
-        fontSize: this.options.linkWidth * 8,
+        stroke: this.options.labelColor,
+        strokeWidth: 0.8 * this.options.linkWidth,
+        fill: 'none',
       }
     },
     arrowStyle() {
