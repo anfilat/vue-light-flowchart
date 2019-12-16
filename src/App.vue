@@ -47,7 +47,7 @@ export default {
         scale: 1,
         nodes: [
           {
-            id: 2,
+            id: 'test1',
             x: -700,
             y: -69,
             type: 'Action',
@@ -61,7 +61,7 @@ export default {
             label: 'test2',
           },
           {
-            id: 6,
+            id: 'test3',
             x: -557,
             y: 80,
             type: 'Rule',
@@ -71,7 +71,7 @@ export default {
         links: [
           {
             id: 3,
-            from: 2, // node id the link start
+            from: 'test1', // node id the link start
             to: 4,  // node id the link end
           }
         ],

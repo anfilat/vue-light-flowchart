@@ -25,11 +25,7 @@ export default {
   name: 'FlowchartNode',
   props: {
     id: {
-      type: Number,
-      default: 1000,
-      validator(val) {
-        return typeof val === 'number'
-      }
+      default: 1000
     },
     x: {
       type: Number,
