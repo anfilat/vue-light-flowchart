@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1> simple flowchart</h1>
+    <h1>light flowchart</h1>
     <div class="tool-wrapper">
       <div>
         <select v-model="newNodeType">
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <simple-flowchart :scene.sync="scene"
+    <light-flowchart :scene.sync="scene"
       @nodeClick="nodeClick"
       @nodeDelete="nodeDelete"
       @linkBreak="linkBreak"
@@ -32,12 +32,12 @@
 
 <script>
   /* eslint-disable */
-import SimpleFlowchart from './components/SimpleFlowchart.vue'
+import LightFlowchart from './components/LightFlowchart.vue'
 
 export default {
   name: 'app',
   components: {
-    SimpleFlowchart
+    LightFlowchart
   },
   data() {
     return {

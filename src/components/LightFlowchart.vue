@@ -43,7 +43,7 @@ const autoScrollStep = 8;
 const autoScrollTimeout = 100;
 
 export default {
-  name: 'VueFlowchart',
+  name: 'VueLightFlowchart',
   props: {
     scene: {
       type: Object,

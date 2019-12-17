@@ -1,16 +1,13 @@
-# vue-simple-flowchart
+# vue-light-flowchart
 
 ## Introduction
 
-a lightweight flowchart editor for Vue.js, code with vanillaJS, 
-### Note
-This repository is not being actively maintained due to lack of time and interest. 
-
-My sincerest apologies to the open source community for allowing this project to stagnate. I hope it was useful for some of you as a jumping-off point.
+A lightweight flowchart editor for Vue.js, code with vanillaJS.
+Based on [vue-simple-flowchart](https://github.com/Jeffreyrn/vue-simple-flowchart)
 
 ## Demo
 
-[https://anfilat.github.io/vue-simple-flowchart/](https://anfilat.github.io/vue-simple-flowchart/)
+[https://anfilat.github.io/vue-light-flowchart/](https://anfilat.github.io/vue-light-flowchart/)
 
 ### Feature
 
@@ -23,18 +20,18 @@ My sincerest apologies to the open source community for allowing this project to
 install via npm/yarn
 
 ```
-yarn add vue-simple-flowchart
+npm install --save vue-light-flowchart
 ```
 
 import in script
 
 ```js
-import SimpleFlowchart from 'vue-simple-flowchart';
-import 'vue-simple-flowchart/dist/vue-flowchart.css';
+import LightFlowchart from 'vue-light-flowchart';
+import 'vue-light-flowchart/dist/vue-light-flowchart.css';
 ```
 register the component, and add below to html:
 ```html
-<simple-flowchart :scene.sync="data"></simple-flowchart>
+<light-flowchart :scene.sync="data"></light-flowchart>
 ```
 then set data for flowchart component, for example:
 ```js
@@ -96,27 +93,20 @@ data() {
 ## Project setup
 
 ```
-yarn install
+npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+npm run serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn run build
+npm run build
 ```
 
 ### Lints and fixes files
 ```
-yarn run lint
+npm run lint
 ```
-
-## TODO
-
-- Add horizontal mode
-- Optimizition for large node array
-- Theme color configurable
-- Remove Console.log in build mode

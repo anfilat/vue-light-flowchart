@@ -1,8 +1,8 @@
 {
-  "name": "vue-simple-flowchart",
-  "version": "0.1.8",
+  "name": "vue-light-flowchart",
+  "version": "0.2.0",
   "private": false,
-  "main": "./dist/vue-flowchart.common.js",
+  "main": "./dist/vue-light-flowchart.common.js",
   "files": [
     "dist"
   ],
@@ -10,7 +10,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest demo",
     "lint": "vue-cli-service lint",
-    "build:bundle": "vue-cli-service build --target lib --name vue-flowchart ./src/index.js",
+    "build:bundle": "vue-cli-service build --target lib --name vue-light-flowchart ./src/index.js",
     "deploy": "gh-pages -d demo"
   },
   "license": "MIT",
@@ -52,6 +52,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jeffreyrn/vue-simple-flowchart"
+    "url": "https://github.com/anfilat/vue-light-flowchart"
   }
 }

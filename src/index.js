@@ -1,2 +1,2 @@
-import SimpleFlowchart from './components/SimpleFlowchart.vue'
-export default SimpleFlowchart;
+import LightFlowchart from './components/LightFlowchart.vue'
+export default LightFlowchart;
