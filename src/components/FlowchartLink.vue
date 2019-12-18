@@ -85,9 +85,23 @@ export default {
     },
     calculateRotation() {
       // calculate arrow rotation
-      const angle = -Math.atan2(this.end[0] - this.start[0], this.end[1] - this.start[1]);
+      const [x, y] = this.bezierDots();
+      const xTangent = 0.75 * (x[1] - x[0]) + 1.5 * (x[2] - x[1]) + 0.75 * (x[3] - x[2]);
+      const yTangent = 0.75 * (y[1] - y[0]) + 1.5 * (y[2] - y[1]) + 0.75 * (y[3] - y[2]);
+      const angle = -Math.atan2(xTangent, yTangent);
       const degree = angle * 180 / Math.PI;
       return degree < 0 ? degree + 360 : degree;
+    },
+    bezierDots() {
+      const x0 = this.start[0];
+      const y0 = this.start[1];
+      const x3 = this.end[0];
+      const y3 = this.end[1];
+      const x1 = x0;
+      const y1 = y0 + 50;
+      const x2 = x3;
+      const y2 = y3 - 50;
+      return [[x0, x1, x2, x3], [y0, y1, y2, y3]];
     },
     deleteLink() {
       this.$emit('deleteLink');
@@ -121,15 +135,8 @@ export default {
       return `translate(${arrowX}, ${arrowY}) rotate(${degree}) scale(${this.options.scale})`;
     },
     dAttr() {
-      const sx = this.start[0];
-      const sy = this.start[1];
-      const ex = this.end[0];
-      const ey = this.end[1];
-      const x1 = sx;
-      const y1 = sy + 50;
-      const x2 = ex;
-      const y2 = ey - 50;
-      return `M ${sx}, ${sy} C ${x1}, ${y1}, ${x2}, ${y2}, ${ex}, ${ey}`;
+      const [x, y] = this.bezierDots();
+      return `M ${x[0]}, ${y[0]} C ${x[1]}, ${y[1]}, ${x[2]}, ${y[2]}, ${x[3]}, ${y[3]}`;
     }
   }
 }
