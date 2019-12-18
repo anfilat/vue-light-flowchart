@@ -3,7 +3,7 @@
     :class="[{selected: options.selected === id}, options.orientation === 'vert' ? 'vert' : 'hor']"
     :style="nodeStyle"
     @mousedown.prevent="handleMousedown"
-    @mouseover="handleMouseOver"
+    @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave">
     <div class="node-port node-input"
        @mousedown="inputMouseDown"
@@ -97,9 +97,9 @@ export default {
         this.$emit('nodeSelected', e);
       }
     },
-    handleMouseOver() {
+    handleMouseEnter() {
       this.show.delete = true;
-      this.$emit('nodeMouseOver');
+      this.$emit('nodeMouseEnter');
     },
     handleMouseLeave() {
       this.show.delete = false;

@@ -1,7 +1,7 @@
 <template>
   <g
     @mousedown="handleClick"
-    @mouseover="handleMouseOver"
+    @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave">
     <path :d="dAttr" :style="pathStyle"/>
     <a
@@ -67,10 +67,10 @@ export default {
     handleClick() {
       this.$emit('linkClick');
     },
-    handleMouseOver() {
+    handleMouseEnter() {
       if (this.id) {
         this.show.delete = true;
-        this.$emit('linkMouseOver');
+        this.$emit('linkMouseEnter');
       }
     },
     handleMouseLeave() {

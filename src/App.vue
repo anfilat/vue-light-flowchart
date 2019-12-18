@@ -24,12 +24,12 @@
       @canvasClick="canvasClick"
       @nodeClick="nodeClick"
       @nodeDelete="nodeDelete"
-      @nodeMouseOver="nodeMouseOver"
+      @nodeMouseEnter="nodeMouseEnter"
       @nodeMouseLeave="nodeMouseLeave"
       @linkClick="linkClick"
       @linkBreak="linkBreak"
       @linkAdded="linkAdded"
-      @linkMouseOver="linkMouseOver"
+      @linkMouseEnter="linkMouseEnter"
       @linkMouseLeave="linkMouseLeave"
       :height="800"/>
   </div>
@@ -159,8 +159,8 @@ export default {
     nodeDelete(id) {
       console.log('node delete', id);
     },
-    nodeMouseOver(id) {
-      console.log('node mouse over', id);
+    nodeMouseEnter(id) {
+      console.log('node mouse enter', id);
     },
     nodeMouseLeave(id) {
       console.log('node mouse leave', id);
@@ -174,8 +174,8 @@ export default {
     linkAdded(link) {
       console.log('new link added:', link);
     },
-    linkMouseOver(link) {
-      console.log('link mouse over', link);
+    linkMouseEnter(link) {
+      console.log('link mouse enter', link);
     },
     linkMouseLeave(link) {
       console.log('link mouse leave', link);

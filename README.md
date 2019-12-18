@@ -86,12 +86,12 @@ data() {
 
 - nodeClick, emit when node click, event = nodeID
 - nodeDelete: emit when node deleted, event = nodeID
-- nodeMouseOver: emit when mouse moves over node, event = nodeID
+- nodeMouseEnter: emit when mouse enters node, event = nodeID
 - nodeMouseLeave: emit when mouse has left node, event = nodeID
 - linkClick, emit when link click, event = {id, from, to} (link Object)
 - linkBreak: emit when the selected link deleted, event = {id, from, to} (deleted link Object)
 - linkAdded: emit when new link added, event = {id, from, to} (new link Object)
-- linkMouseOver: emit when mouse moves over link, event = {id, from, to} (link Object)
+- linkMouseEnter: emit when mouse enters link, event = {id, from, to} (link Object)
 - linkMouseLeave: emit when mouse has left link, event = {id, from, to} (link Object)
 - canvasClick: emit when canvas click, event = { (Event Object) }
 

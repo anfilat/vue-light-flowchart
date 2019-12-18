@@ -12,7 +12,7 @@
         v-for="link in lines"
         :key="link.id"
         :options="linkOptions"
-        @linkMouseOver="linkMouseOver(link.id)"
+        @linkMouseEnter="linkMouseEnter(link.id)"
         @linkMouseLeave="linkMouseLeave(link.id)"
         @linkClick="linkClick(link.id)"
         @deleteLink="linkDelete(link.id)">
@@ -25,7 +25,7 @@
       :options="nodeOptions"
       @linkingStart="linkingStart(node.id)"
       @linkingStop="linkingStop(node.id)"
-      @nodeMouseOver="nodeMouseOver(node.id)"
+      @nodeMouseEnter="nodeMouseEnter(node.id)"
       @nodeMouseLeave="nodeMouseLeave(node.id)"
       @nodeSelected="nodeSelected(node.id, $event)">
     </flowchart-node>
@@ -240,8 +240,8 @@ export default {
         this.$emit('linkBreak', link);
       }
     },
-    linkMouseOver(id) {
-      this.$emit('linkMouseOver', this.findLink(id));
+    linkMouseEnter(id) {
+      this.$emit('linkMouseEnter', this.findLink(id));
     },
     linkMouseLeave(id) {
       this.$emit('linkMouseLeave', this.findLink(id));
@@ -355,8 +355,8 @@ export default {
       this.scene.links = this.scene.links.filter(link => link.from !== id && link.to !== id);
       this.$emit('nodeDelete', id);
     },
-    nodeMouseOver(id) {
-      this.$emit('nodeMouseOver', id);
+    nodeMouseEnter(id) {
+      this.$emit('nodeMouseEnter', id);
     },
     nodeMouseLeave(id) {
       this.$emit('nodeMouseLeave', id);
