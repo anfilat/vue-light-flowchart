@@ -227,5 +227,6 @@ $portSize: 12;
 
 .selected {
   box-shadow: 0 0 0 2px var(--theme-color);
+  z-index: 2;
 }
 </style>
