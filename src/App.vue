@@ -23,6 +23,7 @@
     <light-flowchart :scene.sync="scene"
       @nodeClick="nodeClick"
       @nodeDelete="nodeDelete"
+      @linkClick="linkClick"
       @linkBreak="linkBreak"
       @linkAdded="linkAdded"
       @canvasClick="canvasClick"
@@ -154,8 +155,11 @@ export default {
     nodeDelete(id) {
       console.log('node delete', id);
     },
-    linkBreak(id) {
-      console.log('link break', id);
+    linkClick(link) {
+      console.log('link click', link);
+    },
+    linkBreak(link) {
+      console.log('link break', link);
     },
     linkAdded(link) {
       console.log('new link added:', link);

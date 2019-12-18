@@ -1,11 +1,16 @@
 <template>
   <g
+    @mousedown="handleClick"
     @mouseover="handleMouseOver"
     @mouseleave="handleMouseLeave">
-    <path :d="dAttr" :style="pathStyle"></path>
+    <path :d="dAttr" :style="pathStyle"/>
     <a
       v-if="show.delete"
       @click="deleteLink">
+      <circle cx="0" cy="0" r="8"
+        fill-opacity="0"
+        :transform="arrowTransform">
+      </circle>
       <path
         d="M -4 -4 L 4 4 M 4 -4 L -4 4"
         :style="deleteStyle"
@@ -15,7 +20,7 @@
     <path v-else
       d="M -1 -1 L 0 1 L 1 -1 z"
       :style="arrowStyle"
-      :transform="arrowTransform"></path>
+      :transform="arrowTransform"/>
   </g>
 </template>
 
@@ -59,6 +64,9 @@ export default {
     }
   },
   methods: {
+    handleClick() {
+      this.$emit('linkClick');
+    },
     handleMouseOver() {
       if (this.id) {
         this.show.delete = true;

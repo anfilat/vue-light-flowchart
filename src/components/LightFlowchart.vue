@@ -12,6 +12,7 @@
         v-for="link in lines"
         :key="link.id"
         :options="linkOptions"
+        @linkClick="linkClick(link.id)"
         @deleteLink="linkDelete(link.id)">
       </flowchart-link>
     </svg>
@@ -225,11 +226,15 @@ export default {
       }
       this.draggingLink = null;
     },
+    linkClick(id) {
+      const link = this.scene.links.find(item => item.id === id);
+      this.$emit('linkClick', link);
+    },
     linkDelete(id) {
-      const deletedLink = this.scene.links.find(item => item.id === id);
-      if (deletedLink) {
+      const link = this.scene.links.find(item => item.id === id);
+      if (link) {
         this.scene.links = this.scene.links.filter(item => item.id !== id);
-        this.$emit('linkBreak', deletedLink);
+        this.$emit('linkBreak', link);
       }
     },
     nodeSelected(id, e) {
