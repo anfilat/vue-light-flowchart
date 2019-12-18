@@ -70,10 +70,12 @@ export default {
     handleMouseOver() {
       if (this.id) {
         this.show.delete = true;
+        this.$emit('linkMouseOver');
       }
     },
     handleMouseLeave() {
       this.show.delete = false;
+      this.$emit('linkMouseLeave');
     },
     calculateCenterPoint() {
       // calculate arrow position: the center point between start and end

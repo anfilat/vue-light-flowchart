@@ -21,12 +21,16 @@
     </div>
 
     <light-flowchart :scene.sync="scene"
+      @canvasClick="canvasClick"
       @nodeClick="nodeClick"
       @nodeDelete="nodeDelete"
+      @nodeMouseOver="nodeMouseOver"
+      @nodeMouseLeave="nodeMouseLeave"
       @linkClick="linkClick"
       @linkBreak="linkBreak"
       @linkAdded="linkAdded"
-      @canvasClick="canvasClick"
+      @linkMouseOver="linkMouseOver"
+      @linkMouseLeave="linkMouseLeave"
       :height="800"/>
   </div>
 </template>
@@ -136,9 +140,6 @@ export default {
     }
   },
   methods: {
-    canvasClick(e) {
-      console.log('canvas Click, event:', e);
-    },
     addNode() {
       const maxID = Math.max(0, ...this.scene.nodes.map(link => link.id));
       this.scene.nodes.push({
@@ -149,11 +150,20 @@ export default {
         label: this.newNodeLabel ? this.newNodeLabel: `test${maxID + 1}`,
       });
     },
+    canvasClick(e) {
+      console.log('canvas Click, event:', e);
+    },
     nodeClick(id) {
       console.log('node click', id);
     },
     nodeDelete(id) {
       console.log('node delete', id);
+    },
+    nodeMouseOver(id) {
+      console.log('node mouse over', id);
+    },
+    nodeMouseLeave(id) {
+      console.log('node mouse leave', id);
     },
     linkClick(link) {
       console.log('link click', link);
@@ -163,6 +173,12 @@ export default {
     },
     linkAdded(link) {
       console.log('new link added:', link);
+    },
+    linkMouseOver(link) {
+      console.log('link mouse over', link);
+    },
+    linkMouseLeave(link) {
+      console.log('link mouse leave', link);
     }
   }
 }

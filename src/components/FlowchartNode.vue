@@ -99,9 +99,11 @@ export default {
     },
     handleMouseOver() {
       this.show.delete = true;
+      this.$emit('nodeMouseOver');
     },
     handleMouseLeave() {
       this.show.delete = false;
+      this.$emit('nodeMouseLeave');
     },
     outputMouseDown() {
       this.$emit('linkingStart');
