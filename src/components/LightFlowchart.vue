@@ -241,10 +241,14 @@ export default {
       }
     },
     linkMouseEnter(id) {
-      this.$emit('linkMouseEnter', this.findLink(id));
+      if (!this.action.dragging) {
+        this.$emit('linkMouseEnter', this.findLink(id));
+      }
     },
     linkMouseLeave(id) {
-      this.$emit('linkMouseLeave', this.findLink(id));
+      if (!this.action.dragging) {
+        this.$emit('linkMouseLeave', this.findLink(id));
+      }
     },
     findLink(id) {
       return this.scene.links.find(item => item.id === id);
@@ -356,10 +360,14 @@ export default {
       this.$emit('nodeDelete', id);
     },
     nodeMouseEnter(id) {
-      this.$emit('nodeMouseEnter', id);
+      if (!this.action.dragging) {
+        this.$emit('nodeMouseEnter', id);
+      }
     },
     nodeMouseLeave(id) {
-      this.$emit('nodeMouseLeave', id);
+      if (!this.action.dragging) {
+        this.$emit('nodeMouseLeave', id);
+      }
     }
   },
 }
