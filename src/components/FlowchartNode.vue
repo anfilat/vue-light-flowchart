@@ -1,6 +1,6 @@
 <template>
   <div class="flowchart-node"
-    :class="[{selected: options.selected === id}, options.orientation === 'vert' ? 'vert' : 'hor']"
+    :class="[{selected: isSelected}, orientation]"
     :style="nodeStyle"
     @mousedown.prevent="handleMousedown"
     @mouseenter="handleMouseEnter"
@@ -49,6 +49,7 @@ export default {
       type: String,
       default: 'input name'
     },
+    borderColor: String,
     options: {
       type: Object,
       default() {
@@ -56,7 +57,7 @@ export default {
           centerX: 1024,
           centerY: 140,
           scale: 1,
-          selected: false,
+          selected: null,
           orientation: 'vert',
           width: 80,
           height: 80,
@@ -76,8 +77,14 @@ export default {
     }
   },
   computed: {
+    isSelected() {
+      return this.options.selected === this.id;
+    },
+    orientation() {
+      return this.options.orientation === 'vert' ? 'vert' : 'hor';
+    },
     nodeStyle() {
-      return {
+      const style = {
         top: this.options.centerY + this.y * this.options.scale + 'px',
         left: this.options.centerX + this.x * this.options.scale + 'px',
         transform: `scale(${this.options.scale})`,
@@ -87,7 +94,11 @@ export default {
         '--node-bgcolor': this.options.nodeBgColor,
         '--type-color': this.options.typeColor,
         '--label-color': this.options.labelColor,
+      };
+      if (this.borderColor && !this.isSelected) {
+        style['box-shadow'] = `0 0 0 2px ${this.borderColor}`;
       }
+      return style;
     }
   },
   methods: {

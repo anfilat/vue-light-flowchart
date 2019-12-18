@@ -64,6 +64,7 @@ export default {
             y: 80,
             type: 'Rule',
             label: 'test2',
+            borderColor: '#aa1111',
           },
           {
             id: 5,
@@ -92,6 +93,7 @@ export default {
             y: 230,
             type: 'Script',
             label: 'Step in',
+            borderColor: '#11aa11',
           }
         ],
         links: [
