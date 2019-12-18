@@ -48,31 +48,76 @@ export default {
         nodes: [
           {
             id: 'test1',
-            x: -700,
+            x: -600,
             y: -69,
             type: 'Action',
-            label: 'test1',
+            label: 'do it',
           },
           {
             id: 4,
             x: -357,
             y: 80,
-            type: 'Script',
+            type: 'Rule',
             label: 'test2',
           },
           {
-            id: 'test3',
-            x: -557,
+            id: 5,
+            x: -457,
             y: 80,
             type: 'Rule',
-            label: 'test3',
+            label: 'Another test',
+          },
+          {
+            id: 'test3',
+            x: -680,
+            y: 80,
+            type: 'Rule',
+            label: 'test',
+          },
+          {
+            id: 100,
+            x: -557,
+            y: 230,
+            type: 'Script',
+            label: 'Step out',
+          },
+          {
+            id: 102,
+            x: -357,
+            y: 230,
+            type: 'Script',
+            label: 'Step in',
           }
         ],
         links: [
           {
-            id: 3,
+            id: 1,
             from: 'test1', // node id the link start
-            to: 4,  // node id the link end
+            to: 'test3',  // node id the link end
+          },
+          {
+            id: 3,
+            color: '#FFF457',
+            from: 'test1',
+            to: 4,
+          },
+          {
+            id: 10,
+            color: '#69fcff',
+            from: 'test1',
+            to: 5,
+          },
+          {
+            id: 20,
+            color: '#69fcff',
+            from: 5,
+            to: 100,
+          },
+          {
+            id: 21,
+            color: '#FFF457',
+            from: 4,
+            to: 102,
           }
         ],
         orientation: 'vert',

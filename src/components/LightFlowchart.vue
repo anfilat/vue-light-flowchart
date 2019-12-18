@@ -151,6 +151,7 @@ export default {
           start: [sx, sy],
           end: [ex, ey],
           id: link.id,
+          color: link.color,
         };
       });
       if (this.draggingLink) {

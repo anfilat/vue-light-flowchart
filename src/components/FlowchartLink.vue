@@ -23,6 +23,8 @@
 export default {
   name: 'FlowchartLink',
   props: {
+    id: Number,
+    color: String,
     // start point position [x, y]
     start: {
       type: Array,
@@ -37,7 +39,6 @@ export default {
         return [0, 0]
       }
     },
-    id: Number,
     options: {
       type: Object,
       default() {
@@ -85,7 +86,7 @@ export default {
   computed: {
     pathStyle() {
       return {
-        stroke: this.options.themeColor,
+        stroke: this.color || this.options.themeColor,
         strokeWidth: this.options.linkWidth * this.options.scale,
         fill: 'none',
       }
@@ -99,7 +100,7 @@ export default {
     },
     arrowStyle() {
       return {
-        stroke: this.options.themeColor,
+        stroke: this.color || this.options.themeColor,
         strokeWidth: 2 * this.options.linkWidth,
         fill: 'none',
       }
