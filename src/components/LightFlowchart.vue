@@ -148,23 +148,19 @@ export default {
     },
     lines() {
       const lines = this.scene.links.map(({nodes, id, color}) => {
-        const fromNode = this.findNodeWithID(nodes[0]);
-        const toNode = this.findNodeWithID(nodes[1]);
-        const [sx, sy] = this.getPortPosition(fromNode, 'output');
-        const [ex, ey] = this.getPortPosition(toNode, 'input');
         return {
-          start: [sx, sy],
-          end: [ex, ey],
+          segments: this.getSegments(nodes),
           id,
           color,
         };
       });
       if (this.draggingLink) {
+        const segments = this.getSegments(this.draggingLink.nodes);
         const fromNode = this.findNodeWithID(this.draggingLink.lastNode);
         const [sx, sy] = this.getPortPosition(fromNode, 'output');
+        segments.push([sx, sy, this.draggingLink.mx, this.draggingLink.my]);
         lines.push({
-          start: [sx, sy],
-          end: [this.draggingLink.mx, this.draggingLink.my],
+          segments,
         })
       }
       return lines;
@@ -175,6 +171,18 @@ export default {
     this.rootDivOffset.left = this.$el ? this.$el.offsetLeft : 0;
   },
   methods: {
+    getSegments(nodes) {
+      const segments = [];
+      let fromNode = this.findNodeWithID(nodes[0]);
+      for (let i = 1; i < nodes.length; i++) {
+        const toNode = this.findNodeWithID(nodes[i]);
+        const [sx, sy] = this.getPortPosition(fromNode, 'output');
+        const [ex, ey] = this.getPortPosition(toNode, 'input');
+        segments.push([sx, sy, ex, ey]);
+        fromNode = toNode;
+      }
+      return segments;
+    },
     findNodeWithID(id) {
       return this.scene.nodes.find(item => id === item.id)
     },
@@ -205,6 +213,7 @@ export default {
       const [mx, my] = this.getPortPosition(fromNode, 'output');
       this.action.linking = true;
       this.draggingLink = {
+        nodes: [],
         lastNode: index,
         mx,
         my,

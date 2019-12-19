@@ -116,19 +116,11 @@ export default {
           }, {
             id: 3,
             color: '#FFF457',
-            nodes: ['test1', 5],
+            nodes: ['test1', 5, 102],
           }, {
             id: 10,
             color: '#69fcff',
-            nodes: ['test1', 4],
-          }, {
-            id: 20,
-            color: '#69fcff',
-            nodes: [4, 100],
-          }, {
-            id: 21,
-            color: '#FFF457',
-            nodes: [5, 102],
+            nodes: ['test1', 4, 100],
           }
         ],
         orientation: 'vert',
