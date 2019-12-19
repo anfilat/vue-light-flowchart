@@ -76,15 +76,13 @@ export default {
   computed: {
     sections() {
       return this.segments.map(([x0, y0, x3, y3], index) => {
-        const centerX = x0 + (x3 - x0) / 2;
-        const centerY = y0 + (y3 - y0) / 2;
+        const centerX = (x3 + x0) / 2;
+        const centerY = (y3 + y0) / 2;
         const x1 = x0;
         const y1 = y0 + 50;
         const x2 = x3;
         const y2 = y3 - 50;
-        const xTangent = 0.75 * (x3 + x2 - x1 - x0);
-        const yTangent = 0.75 * (y3 + y2 - y1 - y0);
-        let degree = -Math.atan2(xTangent, yTangent) * 180 / Math.PI;
+        let degree = -Math.atan2(x3 + x2 - x1 - x0, y3 + y2 - y1 - y0) * 180 / Math.PI;
         if (degree < 0) {
           degree += 360;
         }

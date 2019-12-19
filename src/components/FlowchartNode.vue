@@ -5,16 +5,21 @@
     @mousedown.prevent="handleMousedown"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave">
-    <div class="node-port node-input"
-       @mousedown="inputMouseDown"
-       @mouseup.prevent="inputMouseUp">
+    <div
+      class="node-port node-input"
+      @mousedown="inputMouseDown"
+      @mouseup.prevent="inputMouseUp"
+      @mousemove="inputMouseMove"
+    >
     </div>
     <div class="node-main">
       <div v-text="type" class="node-type"></div>
       <div v-text="label" class="node-label"></div>
     </div>
-    <div class="node-port node-output"
-      @mousedown.prevent="outputMouseDown">
+    <div
+      class="node-port node-output"
+      @mousedown.prevent="outputMouseDown"
+    >
     </div>
     <div v-show="show.delete" class="node-delete">&times;</div>
   </div>
@@ -122,6 +127,9 @@ export default {
     inputMouseUp() {
       this.$emit('linkingStop');
     },
+    inputMouseMove() {
+      this.$emit('tryLinking');
+    }
   }
 }
 </script>

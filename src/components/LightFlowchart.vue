@@ -25,6 +25,7 @@
       :options="nodeOptions"
       @linkingStart="linkingStart(node.id)"
       @linkingStop="linkingStop(node.id)"
+      @tryLinking="tryAddNodeToLink(node.id)"
       @nodeMouseEnter="nodeMouseEnter(node.id)"
       @nodeMouseLeave="nodeMouseLeave(node.id)"
       @nodeSelected="nodeSelected(node.id, $event)">
@@ -155,9 +156,19 @@ export default {
         };
       });
       if (this.draggingLink) {
-        const segments = this.getSegments(this.draggingLink.nodes);
-        const fromNode = this.findNodeWithID(this.draggingLink.lastNode);
-        const [sx, sy] = this.getPortPosition(fromNode, 'output');
+        const segments = [];
+        const lastNode = this.findNodeWithID(this.draggingLink.lastNodeId);
+
+        const nodes = this.draggingLink.nodes;
+        if (nodes.length > 0) {
+          segments.push(...this.getSegments(nodes));
+          const fromNode = this.findNodeWithID(nodes[nodes.length - 1]);
+          const [sx, sy] = this.getPortPosition(fromNode, 'output');
+          const [ex, ey] = this.getPortPosition(lastNode, 'input');
+          segments.push([sx, sy, ex, ey]);
+        }
+
+        const [sx, sy] = this.getPortPosition(lastNode, 'output');
         segments.push([sx, sy, this.draggingLink.mx, this.draggingLink.my]);
         lines.push({
           segments,
@@ -208,35 +219,64 @@ export default {
       }
       return [x + width * scale, top];
     },
-    linkingStart(index) {
-      const fromNode = this.findNodeWithID(index);
-      const [mx, my] = this.getPortPosition(fromNode, 'output');
+    linkingStart(id) {
+      const node = this.findNodeWithID(id);
+      const [mx, my] = this.getPortPosition(node, 'output');
       this.action.linking = true;
       this.draggingLink = {
         nodes: [],
-        lastNode: index,
+        lastNodeId: id,
         mx,
         my,
       };
     },
-    linkingStop(index) {
-      // add new Link
-      if (this.draggingLink && this.draggingLink.lastNode !== index) {
-        // check link existence
-        const existed = this.scene.links.find(({nodes}) => {
-          return nodes[0] === this.draggingLink.lastNode && nodes[1] === index;
-        });
-        if (!existed) {
-          const maxID = Math.max(0, ...this.scene.links.map(link => link.id));
-          const newLink = {
-            id: maxID + 1,
-            nodes: [this.draggingLink.lastNode, index],
-          };
-          this.scene.links.push(newLink);
-          this.$emit('linkAdded', newLink)
-        }
+    tryAddNodeToLink(id) {
+      const draggingLink = this.draggingLink;
+      if (!draggingLink) {
+        return;
+      }
+      if (draggingLink.lastNodeId === id || this.isLinkIntersections(draggingLink, id)) {
+        return;
+      }
+
+      draggingLink.nodes.push(draggingLink.lastNodeId);
+      draggingLink.lastNodeId = id;
+    },
+    linkingStop(id) {
+      const draggingLink = this.draggingLink;
+      if (!draggingLink) {
+        return;
       }
       this.draggingLink = null;
+
+      if (id !== draggingLink.lastNodeId) {
+        return;
+      }
+      if (this.isLinkIntersections(draggingLink, id)) {
+        return;
+      }
+
+      draggingLink.nodes.push(id);
+      if (this.isLinkExists(draggingLink)) {
+        return;
+      }
+
+      const maxID = Math.max(0, ...this.scene.links.map(link => link.id));
+      const newLink = {
+        id: maxID + 1,
+        nodes: draggingLink.nodes,
+      };
+      this.scene.links.push(newLink);
+      this.$emit('linkAdded', newLink)
+    },
+    isLinkIntersections(link, id) {
+      return link.nodes.some(node => node === id);
+    },
+    isLinkExists(link) {
+      return this.scene.links.some(({nodes}) => {
+        return link.nodes.length === nodes.length &&
+          link.nodes.every((nodeId, index) => nodeId === nodes[index]);
+      });
     },
     linkClick(id) {
       this.$emit('linkClick', this.findLink(id));
