@@ -152,7 +152,12 @@ export default {
   },
   methods: {
     addNode() {
-      const maxID = Math.max(0, ...this.scene.nodes.map(link => link.id));
+      const maxID = Math.max(0,
+        ...this.scene.nodes
+          .filter(link => Number.isFinite(link.id))
+          .map(link => link.id)
+      );
+      console.log('addNode', maxID);
       this.scene.nodes.push({
         id: maxID + 1,
         x: -400,
