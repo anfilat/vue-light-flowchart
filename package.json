@@ -1,6 +1,6 @@
 {
   "name": "vue-light-flowchart",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "main": "./dist/vue-light-flowchart.common.js",
   "files": [

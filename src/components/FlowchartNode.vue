@@ -1,6 +1,6 @@
 <template>
   <div class="flowchart-node"
-    :class="[{selected: isSelected}, orientation]"
+    :class="[{selected: isSelected}, options.orientation]"
     :style="nodeStyle"
     @mousedown.prevent="handleMousedown"
     @mouseenter="handleMouseEnter"
@@ -79,9 +79,6 @@ export default {
   computed: {
     isSelected() {
       return this.options.selected === this.id;
-    },
-    orientation() {
-      return this.options.orientation === 'vert' ? 'vert' : 'hor';
     },
     nodeStyle() {
       const style = {

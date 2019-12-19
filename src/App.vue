@@ -53,47 +53,60 @@ export default {
         nodes: [
           {
             id: 'test1',
-            x: -600,
+            x: -550,
             y: -69,
             type: 'Action',
             label: 'do it',
-          },
-          {
-            id: 4,
-            x: -357,
-            y: 80,
-            type: 'Rule',
-            label: 'test2',
-            borderColor: '#aa1111',
-          },
-          {
-            id: 5,
-            x: -457,
-            y: 80,
-            type: 'Rule',
-            label: 'Another test',
-          },
-          {
+          }, {
+            id: 3,
+            x: -200,
+            y: -69,
+            type: 'Action',
+            label: 'run it',
+          }, {
             id: 'test3',
             x: -680,
             y: 80,
             type: 'Rule',
             label: 'test',
-          },
-          {
+          }, {
+            id: 4,
+            x: -457,
+            y: 80,
+            type: 'Rule',
+            label: 'Another test',
+          }, {
+            id: 5,
+            x: -357,
+            y: 80,
+            type: 'Rule',
+            label: 'test2',
+            borderColor: '#aa1111',
+          }, {
+            id: 7,
+            x: -240,
+            y: 80,
+            type: 'Rule',
+            label: 'something',
+          }, {
             id: 100,
             x: -557,
             y: 230,
             type: 'Script',
             label: 'Step out',
-          },
-          {
+          }, {
             id: 102,
             x: -357,
             y: 230,
             type: 'Script',
             label: 'Step in',
             borderColor: '#11aa11',
+          }, {
+            id: 110,
+            x: -200,
+            y: 230,
+            type: 'Script',
+            label: 'Work',
           }
         ],
         links: [
@@ -101,29 +114,25 @@ export default {
             id: 1,
             from: 'test1', // node id the link start
             to: 'test3',  // node id the link end
-          },
-          {
+          }, {
             id: 3,
             color: '#FFF457',
             from: 'test1',
-            to: 4,
-          },
-          {
+            to: 5,
+          }, {
             id: 10,
             color: '#69fcff',
             from: 'test1',
-            to: 5,
-          },
-          {
+            to: 4,
+          }, {
             id: 20,
             color: '#69fcff',
-            from: 5,
+            from: 4,
             to: 100,
-          },
-          {
+          }, {
             id: 21,
             color: '#FFF457',
-            from: 4,
+            from: 5,
             to: 102,
           }
         ],

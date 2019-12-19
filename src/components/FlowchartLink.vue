@@ -86,8 +86,8 @@ export default {
     calculateRotation() {
       // calculate arrow rotation
       const [x, y] = this.bezierDots();
-      const xTangent = 0.75 * (x[1] - x[0]) + 1.5 * (x[2] - x[1]) + 0.75 * (x[3] - x[2]);
-      const yTangent = 0.75 * (y[1] - y[0]) + 1.5 * (y[2] - y[1]) + 0.75 * (y[3] - y[2]);
+      const xTangent = 0.75 * (x[3] + x[2] - x[1] - x[0]);
+      const yTangent = 0.75 * (y[3] + y[2] - y[1] - y[0]);
       const angle = -Math.atan2(xTangent, yTangent);
       const degree = angle * 180 / Math.PI;
       return degree < 0 ? degree + 360 : degree;

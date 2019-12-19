@@ -12,7 +12,7 @@ Based on [vue-simple-flowchart](https://github.com/Jeffreyrn/vue-simple-flowchar
 ### Feature
 
 - drag to connent two node, click to delete link
-- support add, delete, save node
+- support add, delete node
 - reactive flowchart data
   
 ### Usage
@@ -39,38 +39,40 @@ data() {
     return {
         data: {
             centerX: 1024,
-                centerY: 140,
-                scale: 1,
-                nodes: [
-                    {
-                        id: 2,
-                        x: -700,
-                        y: -69,
-                        type: 'Action',
-                        label: 'test1',
-                    },
-                    {
-                        id: 4,
-                        x: -357,
-                        y: 80,
-                        type: 'Script',
-                        label: 'test2',
-                    },
-                    {
-                        id: 6,
-                        x: -557,
-                        y: 80,
-                        type: 'Rule',
-                        label: 'test3',
-                    }
-                    ],
-                    links: [
-                    {
-                        id: 3,
-                        from: 2, // node id the link start
-                        to: 4,  // node id the link end
-                    }
-                ]
+            centerY: 140,
+            scale: 1,
+            nodes: [
+                {
+                    id: 'id2',
+                    x: -700,
+                    y: -69,
+                    type: 'Action',
+                    label: 'test1',
+                },
+                {
+                    id: 4,
+                    x: -357,
+                    y: 80,
+                    type: 'Script',
+                    label: 'test2',
+                    borderColor: '#aa1111',
+                },
+                {
+                    id: 6,
+                    x: -557,
+                    y: 80,
+                    type: 'Rule',
+                    label: 'test3',
+                }
+            ],
+            links: [
+                {
+                    id: 3,
+                    color: '#FFF457',
+                    from: 'id2', // node id the link start
+                    to: 4,  // node id the link end
+                }
+            ]
         },
     };
 }
