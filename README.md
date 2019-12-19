@@ -69,8 +69,7 @@ data() {
                 {
                     id: 3,
                     color: '#FFF457',
-                    from: 'id2', // node id the link start
-                    to: 4,  // node id the link end
+                    nodes: ['id2', 4], // node ids the link start, end
                 }
             ]
         },

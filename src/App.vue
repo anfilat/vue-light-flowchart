@@ -112,28 +112,23 @@ export default {
         links: [
           {
             id: 1,
-            from: 'test1', // node id the link start
-            to: 'test3',  // node id the link end
+            nodes: ['test1', 'test3'], // node ids the link start, end
           }, {
             id: 3,
             color: '#FFF457',
-            from: 'test1',
-            to: 5,
+            nodes: ['test1', 5],
           }, {
             id: 10,
             color: '#69fcff',
-            from: 'test1',
-            to: 4,
+            nodes: ['test1', 4],
           }, {
             id: 20,
             color: '#69fcff',
-            from: 4,
-            to: 100,
+            nodes: [4, 100],
           }, {
             id: 21,
             color: '#FFF457',
-            from: 5,
-            to: 102,
+            nodes: [5, 102],
           }
         ],
         orientation: 'vert',

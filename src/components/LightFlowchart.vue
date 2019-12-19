@@ -147,20 +147,20 @@ export default {
       }
     },
     lines() {
-      const lines = this.scene.links.map((link) => {
-        const fromNode = this.findNodeWithID(link.from);
-        const toNode = this.findNodeWithID(link.to);
+      const lines = this.scene.links.map(({nodes, id, color}) => {
+        const fromNode = this.findNodeWithID(nodes[0]);
+        const toNode = this.findNodeWithID(nodes[1]);
         const [sx, sy] = this.getPortPosition(fromNode, 'output');
         const [ex, ey] = this.getPortPosition(toNode, 'input');
         return {
           start: [sx, sy],
           end: [ex, ey],
-          id: link.id,
-          color: link.color,
+          id,
+          color,
         };
       });
       if (this.draggingLink) {
-        const fromNode = this.findNodeWithID(this.draggingLink.from);
+        const fromNode = this.findNodeWithID(this.draggingLink.lastNode);
         const [sx, sy] = this.getPortPosition(fromNode, 'output');
         lines.push({
           start: [sx, sy],
@@ -205,24 +205,23 @@ export default {
       const [mx, my] = this.getPortPosition(fromNode, 'output');
       this.action.linking = true;
       this.draggingLink = {
-        from: index,
+        lastNode: index,
         mx,
         my,
       };
     },
     linkingStop(index) {
       // add new Link
-      if (this.draggingLink && this.draggingLink.from !== index) {
+      if (this.draggingLink && this.draggingLink.lastNode !== index) {
         // check link existence
-        const existed = this.scene.links.find((link) => {
-          return link.from === this.draggingLink.from && link.to === index;
+        const existed = this.scene.links.find(({nodes}) => {
+          return nodes[0] === this.draggingLink.lastNode && nodes[1] === index;
         });
         if (!existed) {
           const maxID = Math.max(0, ...this.scene.links.map(link => link.id));
           const newLink = {
             id: maxID + 1,
-            from: this.draggingLink.from,
-            to: index,
+            nodes: [this.draggingLink.lastNode, index],
           };
           this.scene.links.push(newLink);
           this.$emit('linkAdded', newLink)
@@ -356,7 +355,7 @@ export default {
     },
     nodeDelete(id) {
       this.scene.nodes = this.scene.nodes.filter(node => node.id !== id);
-      this.scene.links = this.scene.links.filter(link => link.from !== id && link.to !== id);
+      this.scene.links = this.scene.links.filter(link => !link.nodes.some(nodeId => nodeId === id));
       this.$emit('nodeDelete', id);
     },
     nodeMouseEnter(id) {
