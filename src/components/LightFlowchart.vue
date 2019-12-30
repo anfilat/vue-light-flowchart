@@ -8,7 +8,7 @@
       width="100%"
       :height="`${height}px`">
       <flowchart-link
-        v-bind.sync="link"
+        v-bind="link"
         v-for="link in lines"
         :key="link.id"
         :options="linkOptions"
@@ -19,7 +19,7 @@
       </flowchart-link>
     </svg>
     <flowchart-node
-      v-bind.sync="node"
+      v-bind="node"
       v-for="node in scene.nodes"
       :key="node.id"
       :options="nodeOptions"
@@ -56,11 +56,13 @@ export default {
       default() {
         return {
           centerX: 1024,
-          scale: 1,
           centerY: 140,
+          scale: 1,
           nodes: [],
           links: [],
           orientation: 'vert',
+          showDeleteNode: true,
+          showDeleteLink: true,
           styles: {
             nodeWidth: defaultWidth,
             nodeHeight: defaultHeight,
@@ -137,6 +139,7 @@ export default {
         nodeBgColor: this.styles.nodeBgColor,
         typeColor: this.styles.typeColor,
         labelColor: this.styles.labelColor,
+        canDelete: this.scene.showDeleteNode,
       }
     },
     linkOptions() {
@@ -145,6 +148,7 @@ export default {
         themeColor: this.styles.themeColor,
         labelColor: this.styles.labelColor,
         linkWidth: this.styles.linkWidth,
+        canDelete: this.scene.showDeleteLink,
       }
     },
     lines() {
@@ -339,7 +343,8 @@ export default {
         if (typeof target.className !== 'string' || target.className.indexOf('node-input') < 0) {
           this.draggingLink = null;
         }
-        if (typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
+        if (this.scene.showDeleteNode &&
+          typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
           this.nodeDelete(this.action.dragging);
         }
       }

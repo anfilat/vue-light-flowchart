@@ -42,6 +42,7 @@ export default {
           themeColor: '',
           labelColor: '',
           linkWidth: 2.73205,
+          canDelete: true,
         }
       }
     },
@@ -59,13 +60,17 @@ export default {
     },
     handleMouseEnter() {
       if (this.id) {
-        this.show.delete = true;
+        if (this.options.canDelete) {
+          this.show.delete = true;
+        }
         this.$emit('linkMouseEnter');
       }
     },
     handleMouseLeave() {
       if (this.id) {
-        this.show.delete = false;
+        if (this.options.canDelete) {
+          this.show.delete = false;
+        }
         this.$emit('linkMouseLeave');
       }
     },
