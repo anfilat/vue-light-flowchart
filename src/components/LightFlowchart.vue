@@ -86,7 +86,7 @@ export default {
         linking: false,
         dragging: false,
         scrolling: false,
-        selected: 0,
+        selected: [],
       },
       mouse: {
         x: 0,
@@ -184,6 +184,12 @@ export default {
   mounted() {
     this.rootDivOffset.top = this.$el ? this.$el.offsetTop : 0;
     this.rootDivOffset.left = this.$el ? this.$el.offsetLeft : 0;
+    this.select = {
+      lastClickedId: null,
+      isCtrlClick: false,
+      isClickedSelected: false,
+      wasDragging: false,
+    };
   },
   methods: {
     getSegments(nodes) {
@@ -306,8 +312,14 @@ export default {
       return this.scene.links.find(item => item.id === id);
     },
     nodeSelected(id, e) {
-      this.action.dragging = id;
-      this.action.selected = id;
+      this.select = {
+        lastClickedId: id,
+        isCtrlClick: e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey,
+        isClickedSelected: this.action.selected.includes(id),
+        wasDragging: false,
+      };
+      this.action.dragging = true;
+      this.selectNodeOnDown(id);
       this.$emit('nodeClick', id);
       [this.mouse.lastX, this.mouse.lastY] = getMousePosition(this.$el, e);
     },
@@ -323,7 +335,8 @@ export default {
         this.mouse.lastY = mouseY;
         this.mouse.lastEvent = e;
 
-        this.moveSelectedNode(diffX, diffY);
+        this.moveSelectedNodes(diffX, diffY);
+        this.select.wasDragging = true;
         this.startAutoScroll();
       } else if (this.action.scrolling) {
         const [mouseX, mouseY] = getMousePosition(this.$el, e);
@@ -337,6 +350,15 @@ export default {
         this.scene.centerY += diffY;
       }
     },
+    handleDown(e) {
+      const target = e.target || e.srcElement;
+      if ((target === this.$el || target.matches('svg, svg *')) && e.which === 1) {
+        this.action.scrolling = true;
+        [this.mouse.lastX, this.mouse.lastY] = getMousePosition(this.$el, e);
+        this.action.selected = [];
+      }
+      this.$emit('canvasClick', e);
+    },
     handleUp(e) {
       const target = e.target || e.srcElement;
       if (this.$el.contains(target)) {
@@ -345,32 +367,52 @@ export default {
         }
         if (this.scene.showDeleteNode &&
           typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
-          this.nodeDelete(this.action.dragging);
+          this.nodeDelete(this.select.lastClickedId);
         }
       }
+      this.selectNodeOnUp();
       this.action.linking = false;
-      this.action.dragging = null;
+      this.action.dragging = false;
       this.action.scrolling = false;
       this.stopAutoScroll();
     },
-    handleDown(e) {
-      const target = e.target || e.srcElement;
-      if ((target === this.$el || target.matches('svg, svg *')) && e.which === 1) {
-        this.action.scrolling = true;
-        [this.mouse.lastX, this.mouse.lastY] = getMousePosition(this.$el, e);
-        this.action.selected = null; // deselectAll
+    selectNodeOnDown(id) {
+      const {isClickedSelected, isCtrlClick} = this.select;
+      if (isClickedSelected) {
+        return;
       }
-      this.$emit('canvasClick', e);
+      if (isCtrlClick) {
+        this.action.selected.push(id);
+      } else {
+        this.action.selected = [id];
+      }
     },
-    moveSelectedNode(dx, dy) {
-      const index = this.scene.nodes.findIndex(item => item.id === this.action.dragging);
-      const node = this.scene.nodes[index];
-      const left = node.x + dx / this.scale;
-      const top = node.y + dy / this.scale;
-      this.$set(this.scene.nodes, index, Object.assign(node, {
-        x: left,
-        y: top,
-      }));
+    selectNodeOnUp() {
+      const {wasDragging, isClickedSelected, isCtrlClick, lastClickedId} = this.select;
+      if (wasDragging) {
+        return;
+      }
+      if (isClickedSelected) {
+        if (isCtrlClick) {
+          this.action.selected = this.action.selected.filter(item => item !== lastClickedId);
+        } else {
+          this.action.selected = [lastClickedId];
+        }
+      }
+    },
+    moveSelectedNodes(dx, dy) {
+      this.scene.nodes.forEach((node, index) => {
+        if (!this.action.selected.includes(node.id)) {
+          return;
+        }
+
+        const left = node.x + dx / this.scale;
+        const top = node.y + dy / this.scale;
+        this.$set(this.scene.nodes, index, Object.assign(node, {
+          x: left,
+          y: top,
+        }));
+      });
     },
     startAutoScroll() {
       if (!this.autoScrollId) {
@@ -402,7 +444,7 @@ export default {
         diffY = autoScrollStep;
       }
       if (diffX !== 0 || diffY !== 0) {
-        this.moveSelectedNode(diffX, diffY);
+        this.moveSelectedNodes(diffX, diffY);
         this.scene.centerX -= diffX;
         this.scene.centerY -= diffY;
       }

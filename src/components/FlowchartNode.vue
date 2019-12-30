@@ -62,7 +62,7 @@ export default {
           centerX: 1024,
           centerY: 140,
           scale: 1,
-          selected: null,
+          selected: [],
           orientation: 'vert',
           width: 80,
           height: 80,
@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     isSelected() {
-      return this.options.selected === this.id;
+      return this.options.selected.includes(this.id);
     },
     nodeStyle() {
       const style = {
