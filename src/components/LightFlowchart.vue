@@ -105,6 +105,12 @@ export default {
     FlowchartLink,
     FlowchartNode,
   },
+  watch: {
+    'scene.nodes': {
+      handler: 'setNodes',
+      immediate: true,
+    }
+  },
   computed: {
     scale() {
       return this.scene.scale || 1;
@@ -161,12 +167,12 @@ export default {
       });
       if (this.draggingLink) {
         const segments = [];
-        const lastNode = this.findNodeWithID(this.draggingLink.lastNodeId);
+        const lastNode = this.findNode(this.draggingLink.lastNodeId);
 
         const nodes = this.draggingLink.nodes;
         if (nodes.length > 0) {
           segments.push(...this.getSegments(nodes));
-          const fromNode = this.findNodeWithID(nodes[nodes.length - 1]);
+          const fromNode = this.findNode(nodes[nodes.length - 1]);
           const [sx, sy] = this.getPortPosition(fromNode, 'output');
           const [ex, ey] = this.getPortPosition(lastNode, 'input');
           segments.push([sx, sy, ex, ey]);
@@ -192,20 +198,24 @@ export default {
     };
   },
   methods: {
+    setNodes() {
+      this.nodes = new Map();
+      this.scene.nodes.forEach(node => this.nodes[node.id] = node);
+    },
+    findNode(id) {
+      return this.nodes[id];
+    },
     getSegments(nodes) {
       const segments = [];
-      let fromNode = this.findNodeWithID(nodes[0]);
+      let fromNode = this.findNode(nodes[0]);
       for (let i = 1; i < nodes.length; i++) {
-        const toNode = this.findNodeWithID(nodes[i]);
+        const toNode = this.findNode(nodes[i]);
         const [sx, sy] = this.getPortPosition(fromNode, 'output');
         const [ex, ey] = this.getPortPosition(toNode, 'input');
         segments.push([sx, sy, ex, ey]);
         fromNode = toNode;
       }
       return segments;
-    },
-    findNodeWithID(id) {
-      return this.scene.nodes.find(item => id === item.id)
     },
     getPortPosition(node, type) {
       const orientation = this.orientation;
@@ -230,7 +240,7 @@ export default {
       return [x + width * scale, top];
     },
     linkingStart(id) {
-      const node = this.findNodeWithID(id);
+      const node = this.findNode(id);
       const [mx, my] = this.getPortPosition(node, 'output');
       this.action.linking = true;
       this.draggingLink = {
