@@ -326,6 +326,9 @@ export default {
     handleMove(e) {
       if (this.action.linking) {
         [this.draggingLink.mx, this.draggingLink.my] = getMousePosition(this.$el, e);
+
+        this.mouse.lastEvent = e;
+        this.startAutoScroll();
       } else if (this.action.dragging) {
         const [mouseX, mouseY] = getMousePosition(this.$el, e);
         const diffX = mouseX - this.mouse.lastX;
