@@ -20,12 +20,12 @@
     </svg>
     <flowchart-node
       v-bind="node"
+      :incomings="getIncoming(node.id)"
       v-for="node in scene.nodes"
       :key="node.id"
       :options="nodeOptions"
-      @linkingStart="linkingStart(node.id)"
+      @linkingStart="linkingStart"
       @linkingStop="linkingStop(node.id)"
-      @tryLinking="tryAddNodeToLink(node.id)"
       @nodeMouseEnter="nodeMouseEnter(node.id)"
       @nodeMouseLeave="nodeMouseLeave(node.id)"
       @nodeSelected="nodeSelected(node.id, $event)">
@@ -95,10 +95,6 @@ export default {
         lastY: 0,
       },
       draggingLink: null,
-      rootDivOffset: {
-        top: 0,
-        left: 0
-      },
     };
   },
   components: {
@@ -108,6 +104,10 @@ export default {
   watch: {
     'scene.nodes': {
       handler: 'setNodes',
+      immediate: true,
+    },
+    'scene.links': {
+      handler: 'setLinks',
       immediate: true,
     }
   },
@@ -158,38 +158,24 @@ export default {
       }
     },
     lines() {
-      const lines = this.scene.links.map(({nodes, id, color}) => {
+      const lines = this.scene.links.map(link => {
         return {
-          segments: this.getSegments(nodes),
-          id,
-          color,
+          id: link.id,
+          color: link.color,
+          fromTo: this.getPath(link),
         };
       });
       if (this.draggingLink) {
-        const segments = [];
-        const lastNode = this.findNode(this.draggingLink.lastNodeId);
-
-        const nodes = this.draggingLink.nodes;
-        if (nodes.length > 0) {
-          segments.push(...this.getSegments(nodes));
-          const fromNode = this.findNode(nodes[nodes.length - 1]);
-          const [sx, sy] = this.getPortPosition(fromNode, 'output');
-          const [ex, ey] = this.getPortPosition(lastNode, 'input');
-          segments.push([sx, sy, ex, ey]);
-        }
-
-        const [sx, sy] = this.getPortPosition(lastNode, 'output');
-        segments.push([sx, sy, this.draggingLink.mx, this.draggingLink.my]);
+        const from = this.findNode(this.draggingLink.from);
+        const [sx, sy] = this.getPortPosition(from, this.draggingLink.parentLinkId, 'output');
         lines.push({
-          segments,
+          fromTo: [sx, sy, this.draggingLink.mx, this.draggingLink.my],
         })
       }
       return lines;
     }
   },
   mounted() {
-    this.rootDivOffset.top = this.$el ? this.$el.offsetTop : 0;
-    this.rootDivOffset.left = this.$el ? this.$el.offsetLeft : 0;
     this.select = {
       lastClickedId: null,
       isCtrlClick: false,
@@ -200,24 +186,45 @@ export default {
   methods: {
     setNodes() {
       this.nodes = new Map();
-      this.scene.nodes.forEach(node => this.nodes[node.id] = node);
+      this.scene.nodes.forEach(node => this.nodes.set(node.id, node));
     },
-    findNode(id) {
-      return this.nodes[id];
+    setLinks() {
+      this.links = new Map();
+      this.incomings = new Map();
+
+      this.scene.links.forEach(link => {
+        this.links.set(link.id, link);
+
+        const inLinks = this.incomings.get(link.to);
+        if (inLinks === undefined) {
+          this.incomings.set(link.to, [link.id]);
+        } else {
+          inLinks.push(link.id);
+        }
+      });
     },
-    getSegments(nodes) {
-      const segments = [];
-      let fromNode = this.findNode(nodes[0]);
-      for (let i = 1; i < nodes.length; i++) {
-        const toNode = this.findNode(nodes[i]);
-        const [sx, sy] = this.getPortPosition(fromNode, 'output');
-        const [ex, ey] = this.getPortPosition(toNode, 'input');
-        segments.push([sx, sy, ex, ey]);
-        fromNode = toNode;
-      }
-      return segments;
+    findNode(nodeId) {
+      return this.nodes.get(nodeId);
     },
-    getPortPosition(node, type) {
+    findLink(linkId) {
+      return this.links.get(linkId);
+    },
+    getIncoming(nodeId) {
+      return this.incomings.get(nodeId);
+    },
+    getPath(link) {
+      const fromNode = this.findNode(link.from);
+      const toNode = this.findNode(link.to);
+      const [sx, sy] = this.getPortPosition(fromNode, link.parentLinkId, 'output');
+      const [ex, ey] = this.getPortPosition(toNode, link.id, 'input');
+      return [sx, sy, ex, ey];
+    },
+    getPortPosition(node, linkId, type) {
+      const incoming = this.getIncoming(node.id);
+      const incomingLen = incoming == null ? 0 : incoming.length;
+      const linkPosition = linkId == null || incomingLen === 0
+        ? incomingLen
+        : incoming.indexOf(linkId);
       const orientation = this.orientation;
       const scale = this.scale;
       const x = this.scene.centerX + node.x * scale;
@@ -226,100 +233,97 @@ export default {
       const width = this.styles.nodeWidth;
       const height = this.styles.nodeHeight;
       if (orientation === 'vert') {
-        const left = x + (width / 2) * scale;
+        const left = Math.round(x + (linkPosition + 1) / (incomingLen + 2) * width * scale);
         if (type === 'input') {
           return [left, y];
         }
         return [left, y + height * scale];
       }
 
-      const top = y + (height / 2) * scale;
+      const top = Math.round(y + (linkPosition + 1) / (incomingLen + 2) * height * scale);
       if (type === 'input') {
         return [x, top];
       }
       return [x + width * scale, top];
     },
-    linkingStart(id) {
-      const node = this.findNode(id);
-      const [mx, my] = this.getPortPosition(node, 'output');
+    linkingStart(nodeId, parentLinkId) {
+      const node = this.findNode(nodeId);
+      const [mx, my] = this.getPortPosition(node, parentLinkId, 'output');
       this.action.linking = true;
       this.draggingLink = {
-        nodes: [],
-        lastNodeId: id,
+        from: nodeId,
+        to: null,
+        parentLinkId,
         mx,
         my,
       };
     },
-    tryAddNodeToLink(id) {
-      const draggingLink = this.draggingLink;
-      if (!draggingLink) {
-        return;
-      }
-      if (draggingLink.lastNodeId === id || this.isLinkIntersections(draggingLink, id)) {
+    linkingStop(nodeId) {
+      if (!this.draggingLink) {
         return;
       }
 
-      draggingLink.nodes.push(draggingLink.lastNodeId);
-      draggingLink.lastNodeId = id;
-    },
-    linkingStop(id) {
       const draggingLink = this.draggingLink;
-      if (!draggingLink) {
-        return;
-      }
+      draggingLink.to = nodeId;
       this.draggingLink = null;
 
-      if (id !== draggingLink.lastNodeId) {
+      if (draggingLink.from === draggingLink.to) {
         return;
       }
-      if (this.isLinkIntersections(draggingLink, id)) {
-        return;
-      }
-
-      draggingLink.nodes.push(id);
       if (this.isLinkExists(draggingLink)) {
         return;
       }
 
       const maxID = Math.max(0, ...this.scene.links.map(link => link.id));
+      const newId = maxID + 1;
       const newLink = {
-        id: maxID + 1,
-        nodes: draggingLink.nodes,
+        id: newId,
+        parentLinkId: draggingLink.parentLinkId,
+        from: draggingLink.from,
+        to: draggingLink.to,
       };
       this.scene.links.push(newLink);
+
+      if (draggingLink.parentLinkId) {
+        const parent = this.findLink(draggingLink.parentLinkId);
+        if (parent.follow) {
+          parent.follow.push(newId);
+        } else {
+          parent.follow = [newId];
+        }
+      }
+
       this.$emit('linkAdded', newLink)
     },
-    isLinkIntersections(link, id) {
-      return link.nodes.some(node => node === id);
-    },
     isLinkExists(link) {
-      return this.scene.links.some(({nodes}) => {
-        return link.nodes.length === nodes.length &&
-          link.nodes.every((nodeId, index) => nodeId === nodes[index]);
+      return this.scene.links.some(({from, to, parentLinkId}) => {
+        return link.from === from && link.to === to && link.parentLinkId == parentLinkId;
       });
     },
-    linkClick(id) {
-      this.$emit('linkClick', this.findLink(id));
+    linkClick(linkId) {
+      this.$emit('linkClick', this.findLink(linkId));
     },
-    linkDelete(id) {
-      const link = this.findLink(id);
+    linkDelete(linkId) {
+      const link = this.findLink(linkId);
       if (link) {
-        this.scene.links = this.scene.links.filter(item => item.id !== id);
+        this.scene.links.forEach(item => {
+          if (item.follow) {
+            item.follow = item.follow.filter(id => id !== linkId);
+          }
+        });
+        this.scene.links = this.scene.links.filter(item => item.id !== linkId);
         this.$emit('linkBreak', link);
       }
     },
-    linkMouseEnter(id) {
+    linkMouseEnter(linkId) {
       if (!this.action.dragging) {
-        this.$emit('linkMouseEnter', this.findLink(id));
+        this.$emit('linkMouseEnter', this.findLink(linkId));
       }
     },
-    linkMouseLeave(id) {
+    linkMouseLeave(linkId) {
       if (!this.action.dragging) {
-        this.$emit('linkMouseLeave', this.findLink(id));
+        this.$emit('linkMouseLeave', this.findLink(linkId));
       }
-    },
-    findLink(id) {
-      return this.scene.links.find(item => item.id === id);
     },
     nodeSelected(id, e) {
       this.select = {
@@ -375,9 +379,7 @@ export default {
     handleUp(e) {
       const target = e.target || e.srcElement;
       if (this.$el.contains(target)) {
-        if (typeof target.className !== 'string' || target.className.indexOf('node-input') < 0) {
-          this.draggingLink = null;
-        }
+        this.draggingLink = null;
         if (this.scene.showDeleteNode &&
           typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
           this.nodeDelete(this.select.lastClickedId);
@@ -462,19 +464,44 @@ export default {
         this.scene.centerY -= diffY;
       }
     },
-    nodeDelete(id) {
-      this.scene.nodes = this.scene.nodes.filter(node => node.id !== id);
-      this.scene.links = this.scene.links.filter(link => !link.nodes.some(nodeId => nodeId === id));
-      this.$emit('nodeDelete', id);
+    nodeDelete(nodeId) {
+      this.scene.nodes = this.scene.nodes.filter(node => node.id !== nodeId);
+
+      const deleteLinks = new Set();
+      this.scene.links.forEach(link => {
+        if (link.to === nodeId) {
+          deleteLinks.add(link.id);
+
+          if (link.parentLinkId) {
+            const parentLink = this.findLink(link.parentLinkId);
+            parentLink.follow = parentLink.follow.filter(id => id !== link.id);
+          }
+        }
+        if (link.from === nodeId) {
+          // delete all follow links
+          const ids = [link.id];
+          while (ids.length > 0) {
+            const linkId = ids.pop();
+            deleteLinks.add(linkId);
+
+            const item = this.findLink(linkId);
+            if (item.follow) {
+              item.follow.forEach(id => ids.push(id));
+            }
+          }
+        }
+      });
+      this.scene.links = this.scene.links.filter(link => !deleteLinks.has(link.id));
+      this.$emit('nodeDelete', nodeId);
     },
-    nodeMouseEnter(id) {
+    nodeMouseEnter(nodeId) {
       if (!this.action.dragging) {
-        this.$emit('nodeMouseEnter', id);
+        this.$emit('nodeMouseEnter', nodeId);
       }
     },
-    nodeMouseLeave(id) {
+    nodeMouseLeave(nodeId) {
       if (!this.action.dragging) {
-        this.$emit('nodeMouseLeave', id);
+        this.$emit('nodeMouseLeave', nodeId);
       }
     }
   },

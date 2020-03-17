@@ -116,15 +116,40 @@ export default {
         links: [
           {
             id: 1,
-            nodes: ['test1', 'test3'], // node ids the link start, end
+            from: 'test1',
+            to: 'test3',
+          }, {
+            id: 2,
+            from: 'test3',
+            to: 100,
           }, {
             id: 3,
+            from: 'test1',
+            to: 5,
+            follow: [4],
             color: '#FFF457',
-            nodes: ['test1', 5, 102],
+          }, {
+            id: 4,
+            parentLinkId: 3,
+            from: 5,
+            to: 102,
+            color: '#FFF457',
           }, {
             id: 10,
+            from: 'test1',
+            to: 4,
+            follow: [11],
             color: '#69fcff',
-            nodes: ['test1', 4, 100],
+          }, {
+            id: 11,
+            parentLinkId: 10,
+            from: 4,
+            to: 100,
+            color: '#69fcff',
+          }, {
+            id: 5,
+            from: 3,
+            to: 5,
           }
         ],
         orientation: 'vert',

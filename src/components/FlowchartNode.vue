@@ -2,23 +2,20 @@
   <div class="flowchart-node"
     :class="[{selected: isSelected}, options.orientation]"
     :style="nodeStyle"
-    @mousedown.prevent="handleMousedown"
+    @mousedown.prevent="handleMouseDown"
+    @mouseup.prevent="handleMouseUp"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave">
-    <div
-      class="node-port node-input"
-      @mousedown="inputMouseDown"
-      @mouseup.prevent="inputMouseUp"
-      @mousemove="inputMouseMove"
-    >
-    </div>
     <div class="node-main">
       <div v-text="type" class="node-type"></div>
       <div v-text="label" class="node-label"></div>
     </div>
     <div
-      class="node-port node-output"
-      @mousedown.prevent="outputMouseDown"
+      v-for="output in outputs"
+      :key="output.key"
+      class="node-port"
+      :style="output.style"
+      @mousedown.prevent="outputMouseDown(output.parentLinkId)"
     >
     </div>
     <div v-show="show.delete" class="node-delete">&times;</div>
@@ -55,6 +52,9 @@ export default {
       default: 'input name'
     },
     borderColor: String,
+    incomings: {
+      type: Array,
+    },
     options: {
       type: Object,
       default() {
@@ -102,14 +102,45 @@ export default {
         style['box-shadow'] = `0 0 0 2px ${this.borderColor}`;
       }
       return style;
+    },
+    outputs() {
+      const result = [];
+      const incomingLen = this.incomings == null ? 0 : this.incomings.length;
+      if (this.incomings != null) {
+        this.incomings.forEach((linkId, linkPosition) => {
+          const pos = Math.round((linkPosition + 1) / (incomingLen + 2) * 100);
+          const style = this.options.orientation === 'vert'
+            ? {left: `${pos}%`}
+            : {top: `${pos}%`};
+          result.push({
+            key: linkId,
+            parentLinkId: linkId,
+            style,
+          });
+        });
+      }
+      const pos = Math.round((incomingLen + 1) / (incomingLen + 2) * 100);
+      const style = this.options.orientation === 'vert'
+        ? {left: `${pos}%`}
+        : {top: `${pos}%`};
+      result.push({
+        key: 'free',
+        parentLinkId: null,
+        style,
+      });
+
+      return result;
     }
   },
   methods: {
-    handleMousedown(e) {
+    handleMouseDown(e) {
       const target = e.target || e.srcElement;
-      if (target.className.indexOf('node-input') < 0 && target.className.indexOf('node-output') < 0) {
+      if (target.className.indexOf('node-port') < 0) {
         this.$emit('nodeSelected', e);
       }
+    },
+    handleMouseUp() {
+      this.$emit('linkingStop');
     },
     handleMouseEnter() {
       if (this.options.canDelete) {
@@ -123,18 +154,9 @@ export default {
       }
       this.$emit('nodeMouseLeave');
     },
-    outputMouseDown() {
-      this.$emit('linkingStart');
+    outputMouseDown(parentLinkId) {
+      this.$emit('linkingStart', this.id, parentLinkId);
     },
-    inputMouseDown(e) {
-      e.preventDefault();
-    },
-    inputMouseUp() {
-      this.$emit('linkingStop');
-    },
-    inputMouseMove() {
-      this.$emit('tryLinking');
-    }
   }
 }
 </script>
@@ -186,30 +208,14 @@ $portSize: 12;
 
   &.vert {
     .node-port {
-      left: 50%;
       transform: translateX(-50%);
-    }
-
-    .node-input {
-      top: #{-2+$portSize/-2}px;
-    }
-
-    .node-output {
       bottom: #{-2+$portSize/-2}px;
     }
   }
 
   &.hor {
     .node-port {
-      top: 50%;
       transform: translateY(-50%);
-    }
-
-    .node-input {
-      left: #{-2+$portSize/-2}px;
-    }
-
-    .node-output {
       right: #{-2+$portSize/-2}px;
     }
   }
