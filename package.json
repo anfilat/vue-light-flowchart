@@ -13,6 +13,7 @@
     "lint": "vue-cli-service lint"
   },
   "license": "MIT",
+  "author": "Andrey Filatkin <anfilat@mail.ru>",
   "dependencies": {
     "vue": "^2.6.11"
   },
