@@ -61,6 +61,8 @@ export default {
           nodes: [],
           links: [],
           orientation: 'vert',
+          canChangeNodes: true,
+          canChangeLinks: true,
           showDeleteNode: true,
           showDeleteLink: true,
           styles: {
@@ -145,7 +147,7 @@ export default {
         nodeBgColor: this.styles.nodeBgColor,
         typeColor: this.styles.typeColor,
         labelColor: this.styles.labelColor,
-        canDelete: this.scene.showDeleteNode,
+        canChange: this.scene.canChangeNodes || this.scene.showDeleteNode,
       }
     },
     linkOptions() {
@@ -154,7 +156,7 @@ export default {
         themeColor: this.styles.themeColor,
         labelColor: this.styles.labelColor,
         linkWidth: this.styles.linkWidth,
-        canDelete: this.scene.showDeleteLink,
+        canChange: this.scene.canChangeLinks || this.scene.showDeleteLink,
       }
     },
     lines() {
@@ -240,6 +242,9 @@ export default {
       return [x + width * scale, top];
     },
     linkingStart(id) {
+      if (!(this.scene.canChangeLinks || this.scene.showDeleteLink)) {
+        return;
+      }
       const node = this.findNode(id);
       const [mx, my] = this.getPortPosition(node, 'output');
       this.action.linking = true;
@@ -378,7 +383,7 @@ export default {
         if (typeof target.className !== 'string' || target.className.indexOf('node-input') < 0) {
           this.draggingLink = null;
         }
-        if (this.scene.showDeleteNode &&
+        if ((this.scene.canChangeNodes || this.scene.showDeleteNode) &&
           typeof target.className === 'string' && target.className.indexOf('node-delete') > -1) {
           this.nodeDelete(this.select.lastClickedId);
         }

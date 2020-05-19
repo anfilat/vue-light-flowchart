@@ -70,7 +70,7 @@ export default {
           nodeBgColor: '',
           typeColor: '',
           labelColor: '',
-          canDelete: true,
+          canChange: true,
         }
       }
     }
@@ -112,13 +112,13 @@ export default {
       }
     },
     handleMouseEnter() {
-      if (this.options.canDelete) {
+      if (this.options.canChange) {
         this.show.delete = true;
       }
       this.$emit('nodeMouseEnter');
     },
     handleMouseLeave() {
-      if (this.options.canDelete) {
+      if (this.options.canChange) {
         this.show.delete = false;
       }
       this.$emit('nodeMouseLeave');

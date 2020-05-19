@@ -1,8 +1,8 @@
-# vue-light-flowchart
+# vue-light-flowchart v0.3.3
 
 ## Introduction
 
-A lightweight flowchart editor for Vue.js, code with vanillaJS.
+A lightweight flowchart editor for Vue.js.
 Based on [vue-simple-flowchart](https://github.com/Jeffreyrn/vue-simple-flowchart)
 
 ## Demo

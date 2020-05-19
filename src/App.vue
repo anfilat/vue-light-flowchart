@@ -17,10 +17,10 @@
           <option value="vert">Vertical</option>
           <option value="hor">Horizontal</option>
         </select>
-        <input id="deleteNodes" type="checkbox" v-model="scene.showDeleteNode"/>
-        <label for="deleteNodes">Delete nodes</label>
-        <input id="deleteLinks" type="checkbox" v-model="scene.showDeleteLink"/>
-        <label for="deleteLinks">Delete links</label>
+        <input id="changeNodes" type="checkbox" v-model="scene.canChangeNodes"/>
+        <label for="changeNodes">Change nodes</label>
+        <input id="changeLinks" type="checkbox" v-model="scene.canChangeLinks"/>
+        <label for="changeLinks">Change links</label>
       </div>
     </div>
 
@@ -128,8 +128,8 @@ export default {
           }
         ],
         orientation: 'vert',
-        showDeleteNode: true,
-        showDeleteLink: true,
+        canChangeNodes: true,
+        canChangeLinks: true,
       },
       newNodeType: 0,
       newNodeLabel: '',
